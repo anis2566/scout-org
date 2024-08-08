@@ -2,6 +2,7 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { SocialLogin } from "../_components/social-login"
 import { SignInForm } from "./_components/sign-in-form"
+import { Suspense } from "react"
 
 const SignIn = () => {
   return (
@@ -17,7 +18,9 @@ const SignIn = () => {
               />
             </div>
           </div>
-          <SignInForm />
+          <Suspense fallback={<div>Loading...</div>}>
+            <SignInForm />
+          </Suspense>
           <div className="space-y-3">
             <div className="flex items-center gap-x-2">
               <div className="w-full h-[2px] flex-1 bg-primary" />
