@@ -43,9 +43,9 @@ export const SignUpForm = () => {
                 id: "register",
                 duration: 2000
             })
-            // if (data?.user) {
-            //     router.push(`/auth/verify/${data?.user?.id}`)
-            // }
+            if (data?.user) {
+                router.push(`/auth/verify/${data?.user?.id}`)
+            }
         },
         onError: (error) => {
             toast.error(error.message, {

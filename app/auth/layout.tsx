@@ -1,14 +1,22 @@
+"use client"
+
+import { Suspense } from "react";
+
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
-import { Suspense } from "react";
+
 import { SocialLogin } from "./_components/social-login";
 import { Loader } from "@/components/loader";
+import { usePathname } from "next/navigation";
 
 interface Props {
     children: React.ReactNode;
 }
 
-const AuthLayout = ({children}:Props) => {
+const AuthLayout = ({ children }: Props) => {
+    const pathname = usePathname()
+    const isNoLayout = pathname.split("/").includes("verify")
+
     return (
         <section className="container min-h-screen w-full flex items-center justify-center py-4">
             <Card className="p-0 w-full max-w-xl">
@@ -23,16 +31,20 @@ const AuthLayout = ({children}:Props) => {
                     </div>
                 </div>
                 {children}
-                <div className="space-y-3">
-                    <div className="flex items-center gap-x-2">
-                    <div className="w-full h-[2px] flex-1 bg-primary" />
-                    <Badge>OR</Badge>
-                    <div className="w-full h-[2px] flex-1 bg-primary" />
-                    </div>
-                    <Suspense fallback={<Loader />}>
-                        <SocialLogin />
-                    </Suspense>
-                </div>
+                {
+                    !isNoLayout && (
+                        <div className="space-y-3">
+                            <div className="flex items-center gap-x-2">
+                            <div className="w-full h-[2px] flex-1 bg-primary" />
+                            <Badge>OR</Badge>
+                            <div className="w-full h-[2px] flex-1 bg-primary" />
+                            </div>
+                            <Suspense fallback={<Loader />}>
+                                <SocialLogin />
+                            </Suspense>
+                        </div>
+                    )
+                }
                 </CardContent>
             </Card>
         </section>
