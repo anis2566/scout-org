@@ -3,7 +3,6 @@
 import { useMutation } from "@tanstack/react-query"
 import { useState } from "react"
 import { toast } from "sonner"
-// import { useSession } from "next-auth/react"
 import { useRouter } from "next/navigation"
 
 import {
@@ -12,10 +11,8 @@ import {
     InputOTPSeparator,
     InputOTPSlot,
 } from "@/components/ui/input-otp"
-import { VERIFY_USER } from "../action"
 
-// import { VERIFY_USER } from "../action"
-// import { SIGN_IN_USER } from "@/app/auth/sign-in/action"
+import { VERIFY_USER } from "../action"
 
 interface Props {
     id: string;
@@ -24,23 +21,7 @@ interface Props {
 export const VerifyForm = ({ id }: Props) => {
     const [value, setValue] = useState<string>("")
 
-    // const { update } = useSession()
     const router = useRouter()
-
-    // const { mutate: signInUser, isPending: isLoading } = useMutation({
-    //     mutationFn: SIGN_IN_USER,
-    //     onSuccess: async (data) => {
-    //         // if (data?.user) {
-    //         //     await update({
-    //         //         role: data?.user?.role,
-    //         //         status: data?.user?.status,
-    //         //         userId: data?.user?.id,
-    //         //         isVerified: !!data?.user?.emailVerified
-    //         //     })
-    //         //     router.push("/")
-    //         // }
-    //     },
-    // })
 
     const { mutate: verifyUser, isPending } = useMutation({
         mutationFn: VERIFY_USER,
@@ -48,9 +29,7 @@ export const VerifyForm = ({ id }: Props) => {
             toast.success(data?.success, {
                 id: "verify-user"
             })
-            // if (data?.user && data?.user?.password) {
-            //     await signInUser({ values: { email: data.user.email, password: data.user.password }, callback: null })
-            // }
+            router.push("/auth/sign-in")
         },
         onError: (error) => {
             toast.error(error.message, {

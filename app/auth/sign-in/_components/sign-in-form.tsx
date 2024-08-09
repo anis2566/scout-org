@@ -9,7 +9,7 @@ import Link from "next/link"
 import { useMutation } from "@tanstack/react-query"
 import { toast } from "sonner"
 import { useRouter } from "next/navigation"
-// import { useSession } from "next-auth/react"
+import { useSession } from "next-auth/react"
 
 import { Button } from "@/components/ui/button"
 import {
@@ -25,19 +25,17 @@ import { Input } from "@/components/ui/input"
 import { SignInSchema } from "../schema"
 import { SIGN_IN_USER } from "../action"
 
-// import { SIGN_IN_USER } from "../action"
-
 export const SignInForm = () => {
     const [showPassword, setShowPassword] = useState<boolean>(false)
 
-    // const { data } = useSession()
+    const { data } = useSession()
     const router = useRouter()
 
-    // useEffect(() => {
-    //     if (data?.userId) {
-    //         router.push("/")
-    //     }
-    // }, [data?.userId, router])
+    useEffect(() => {
+        if (data?.userId) {
+            router.push("/")
+        }
+    }, [data?.userId, router])
 
     const togglePassword = () => {
         setShowPassword(prev => !prev)

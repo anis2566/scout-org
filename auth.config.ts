@@ -7,7 +7,7 @@ import bcrypt from "bcryptjs";
 import { db } from "./lib/prisma";
 import { SignInSchema } from "./app/auth/sign-in/schema";
 import { GET_USER_BY_EMAIL } from "./services/user.service";
-// import { VERIFY_EMAIL } from "./app/auth/sign-in/action";
+import { VERIFY_EMAIL } from "./app/auth/sign-in/action";
 
 export const authConfig = {
   adapter: PrismaAdapter(db),
@@ -36,13 +36,13 @@ export const authConfig = {
     },
   },
   events: {
-    // async linkAccount({ user, account }) {
-    //   if (["google", "github"].includes(account.provider)) {
-    //     if (user.email) {
-    //       await VERIFY_EMAIL(user.email);
-    //     }
-    //   }
-    // },
+    async linkAccount({ user, account }) {
+      if (["google", "github"].includes(account.provider)) {
+        if (user.email) {
+          await VERIFY_EMAIL(user.email);
+        }
+      }
+    },
   },
   providers: [
     Google({
