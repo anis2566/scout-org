@@ -2,9 +2,9 @@
 
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { SocialLogin } from "../_components/social-login"
 import { SignInForm } from "./_components/sign-in-form"
 import { Suspense } from "react"
+import { SocialLogin } from "@/components/social-login"
 
 const SignIn = () => {
   return (
@@ -29,7 +29,7 @@ const SignIn = () => {
               <Badge>OR</Badge>
               <div className="w-full h-[2px] flex-1 bg-primary" />
             </div>
-            {/* <SocialLogin /> */}
+            <SocialLogin />
           </div>
         </CardContent>
       </Card>
