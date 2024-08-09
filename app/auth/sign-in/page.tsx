@@ -29,7 +29,9 @@ const SignIn = () => {
               <Badge>OR</Badge>
               <div className="w-full h-[2px] flex-1 bg-primary" />
             </div>
-            <SocialLogin />
+            <Suspense fallback={<div>Loading...</div>}>
+              <SocialLogin />
+            </Suspense>
           </div>
         </CardContent>
       </Card>
