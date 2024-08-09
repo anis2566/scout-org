@@ -29,7 +29,7 @@ const SignIn = () => {
               <Badge>OR</Badge>
               <div className="w-full h-[2px] flex-1 bg-primary" />
             </div>
-            <SocialLogin />
+            {/* <SocialLogin /> */}
           </div>
         </CardContent>
       </Card>
