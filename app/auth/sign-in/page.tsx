@@ -1,5 +1,3 @@
-"use client"
-
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { SignInForm } from "./_components/sign-in-form"
@@ -21,9 +19,7 @@ const SignIn = () => {
               />
             </div>
           </div>
-          <Suspense fallback={<div>Loading...</div>}>
             <SignInForm />
-          </Suspense>
           <div className="space-y-3">
             <div className="flex items-center gap-x-2">
               <div className="w-full h-[2px] flex-1 bg-primary" />
