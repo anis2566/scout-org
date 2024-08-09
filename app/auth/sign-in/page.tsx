@@ -20,9 +20,9 @@ const SignIn = () => {
               />
             </div>
           </div>
-          {/* <Suspense fallback={<div>Loading...</div>}>
+          <Suspense fallback={<div>Loading...</div>}>
             <SignInForm />
-          </Suspense> */}
+          </Suspense>
           <div className="space-y-3">
             <div className="flex items-center gap-x-2">
               <div className="w-full h-[2px] flex-1 bg-primary" />
