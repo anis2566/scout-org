@@ -8,6 +8,7 @@ import { db } from "./lib/prisma";
 import { SignInSchema } from "./app/auth/sign-in/schema";
 import { GET_USER_BY_EMAIL } from "./services/user.service";
 import { VERIFY_EMAIL } from "./app/auth/sign-in/action";
+import { CREATE_STREAM_USER } from "./app/auth/sign-up/action";
 
 export const authConfig = {
   adapter: PrismaAdapter(db),
@@ -15,7 +16,7 @@ export const authConfig = {
   secret: process.env.AUTH_SECRET,
   pages: { signIn: "/auth/sign-in", signOut: "/auth/sign-in" },
   callbacks: {
-    jwt: async ({ token, user}) => {
+    jwt: async ({ token, user }) => {
       if (user) {
         token.role = user.role;
         token.status = user.status;

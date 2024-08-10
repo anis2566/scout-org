@@ -2,6 +2,7 @@
 
 import { auth } from "@/auth";
 import { db } from "@/lib/prisma";
+import { Role } from "@prisma/client";
 
 export const GET_USER_BY_EMAIL = async (email: string) => {
   const user = await db.user.findUnique({
@@ -16,19 +17,32 @@ export const GET_USER_BY_EMAIL = async (email: string) => {
   return user;
 };
 
-
 export const GET_USER = async () => {
-  const session = await auth()
+  const session = await auth();
 
   const user = await db.user.findUnique({
     where: {
-      id: session?.userId
-    }
-  })
+      id: session?.userId,
+    },
+  });
 
-  if(!user) {
-    throw new Error("User not found")
+  if (!user) {
+    throw new Error("User not found");
   }
 
-  return {user};
-}
+  return { user };
+};
+
+export const GET_ADMIN = async () => {
+  const admin = await db.user.findFirst({
+    where: {
+      role: Role.Admin,
+    },
+  });
+
+  if (!admin) {
+    throw new Error("Admin not found");
+  }
+
+  return { admin };
+};

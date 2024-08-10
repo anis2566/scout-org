@@ -12,13 +12,13 @@ import { SidebarToggle } from "./sidebar-toggle";
 
 interface Props {
     status: string;
+    adminId: string;
 }
 
-export function Sidebar({ status }: Props) {
+export function Sidebar({ status, adminId }: Props) {
     const sidebar = useSidebar(useSidebarToggle, (state) => state);
 
     if (!sidebar) return null;
-    console.log(status)
 
     return (
         <aside
@@ -54,7 +54,7 @@ export function Sidebar({ status }: Props) {
                 {
                     status === "Pending" ? (
                         <Button className="flex items-center gap-x-4 mt-8" asChild>
-                            <Link href="/scout/support">
+                            <Link href={`/scout/support?user=${adminId}`}>
                                 <HeadsetIcon />
                                 <p className={cn("", !sidebar.isOpen && "hidden")}>Support</p>
                             </Link>

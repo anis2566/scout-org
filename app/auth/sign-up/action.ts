@@ -7,6 +7,8 @@ import { SignInSchemaType } from "../sign-in/schema";
 import { SignUpSchema } from "./schema";
 import { saltAndHashPassword } from "@/lib/utils";
 import { VerifyEmail } from "@/components/templates/email-verify";
+import streamServerClient from "@/lib/stream";
+import { User } from "next-auth";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -34,6 +36,16 @@ export const SIGN_UP = async (values: SignInSchemaType) => {
         ...data,
         password: hashedPassword,
       },
+      select: {
+        name: true,
+        id: true,
+      },
+    });
+
+    await streamServerClient.upsertUser({
+      id: newUser.id,
+      username: newUser.name || "Guest",
+      name: newUser.name || "Guest",
     });
 
     const verificationToken = await ctx.verificationToken.create({
@@ -58,4 +70,12 @@ export const SIGN_UP = async (values: SignInSchemaType) => {
     success: "Registration successful",
     user: newUser,
   };
+};
+
+export const CREATE_STREAM_USER = async (user: User) => {
+  await streamServerClient.upsertUser({
+    id: user.id ?? "",
+    username: user.name || "Guest",
+    name: user.name || "Guest",
+  })
 };
