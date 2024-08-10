@@ -28,6 +28,52 @@ enum Status {
   Suspended
 }
 
+enum Section {
+  Cub
+  Scout
+  Rover 
+}
+
+enum CommiteeSection {
+  PackCouncil
+  TroopCouncil
+  CrewCouncil
+  GroupCommitee
+}
+
+enum CouponStatus {
+  Active
+  Inactive
+}
+
+enum MigrationStatus {
+  Pending
+  Approved
+  Rejected
+}
+
+enum PaymentStatus {
+  Paid
+  Unpaid
+}
+
+enum TrainingType {
+  National 
+  Region
+  District
+}
+
+enum SignatureAuthor {
+  MD
+  Manager
+  Accountant
+}
+
+enum PublishStatus {
+  Publish
+  Unpublish
+}
+
 
 model User {
   id            String          @id @default(cuid())
@@ -40,7 +86,6 @@ model User {
   status        Status          @default(Pending)
 
   accounts      Account[]
-  sessions      Session[]
  
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -69,16 +114,6 @@ model Account {
   @@id([provider, providerAccountId])
 }
  
-model Session {
-  sessionToken String   @unique
-  userId       String
-  expires      DateTime
-  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
- 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}
- 
 model VerificationToken {
   identifier String
   token      String
@@ -87,3 +122,19 @@ model VerificationToken {
   @@id([identifier])
 }
  
+
+ model Unit {
+  id String @id @default(uuid())
+  name String
+  limit Int
+  section Section
+
+  // leaderId String? @unique
+  // leader Scout? @relation(name: "UnitLeader", fields: [leaderId], references: [id])
+
+  // scouts Scout[]
+  // migrations Migration[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
