@@ -85,6 +85,7 @@ model User {
   role          Role            @default(User)
   status        Status          @default(Pending)
 
+  scout Scout?
   accounts      Account[]
  
   createdAt DateTime @default(now())
@@ -129,11 +130,99 @@ model VerificationToken {
   limit Int
   section Section
 
-  // leaderId String? @unique
-  // leader Scout? @relation(name: "UnitLeader", fields: [leaderId], references: [id])
+  leaderId String? @unique
+  leader Scout? @relation(name: "UnitLeader", fields: [leaderId], references: [id])
 
-  // scouts Scout[]
+  scouts Scout[]
   // migrations Migration[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+
+model Scout {
+  id String @id @default(uuid())
+  name String
+  nameBangla String
+  apsId String?
+  fatherName String
+  motherName String
+  dob DateTime
+  gender String
+  phone String
+  religion String
+  email String?
+  bloodGroup String?
+  villageHouse String
+  roadBlockSector String
+  district String
+  division String
+  thana String
+  postCode String?
+  scoutType String
+  experience String[] @default([])
+  joinDate DateTime?
+  section Section
+  memberType String
+  badge String?
+  role String[] @default([])
+  scoutRegion String
+  scoutDistrict String
+  scoutUpazilla String?
+  institute String?
+  class String?
+  roll String?
+  organization String?
+  designation String?
+  imageUrl String
+  certificateNo String?
+  courseDateSatrt DateTime?
+  courseDateEnd DateTime?
+  status Status @default(Pending)
+  isVerified Boolean @default(false)
+  isPaid Boolean @default(false)
+  allowCard Boolean @default(false)
+
+  preferedUnitId String?
+  preferedUnitName String?
+  
+  userId String @unique
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  unitId String?
+  unit Unit? @relation(fields: [unitId], references: [id])
+
+  leadingUnit Unit? @relation(name: "UnitLeader")
+
+  // migrations Migration[]
+  // bans Ban[]
+  // eventApplications EventApplication[]
+  // trainingApplications TrainingApplication[]
+  // awards ScoutAward[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Fee {
+  id String @id @default(uuid())
+  title String
+  amount Int
+  discountAmount Int
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+
+model Coupon {
+  id String @id @default(uuid())
+  title String
+  code String
+  value Int
+  expire DateTime @default(now())
+  status CouponStatus @default(Inactive)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

@@ -5,6 +5,7 @@ import { QueryProvider } from "@/providers/query-provider";
 import { Toaster } from "sonner";
 import {SessionProvider} from "next-auth/react"
 import { ThemeProvider } from "@/providers/theme-provider";
+import { ModalProvider } from "@/providers/modal-provider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -30,6 +31,7 @@ export default function RootLayout({
             >
               {children}
               <Toaster />
+              <ModalProvider />
             </ThemeProvider>
           </QueryProvider>
         </SessionProvider>

@@ -1,0 +1,33 @@
+"use server";
+
+import axios from "axios";
+
+export const PAY_FOR_REGISTRATION = async (scoutId: string) => {
+  const transactionId = Math.floor(100000 + Math.random() * 900000).toString();
+  try {
+    const res = await axios.post("https://sandbox.aamarpay.com/jsonpost.php", {
+      store_id: "aamarpaytest",
+      signature_key: "dbb74894e82415a2f7ff0ec3a97e4183",
+      cus_name: "Imtiaz Akil",
+      cus_email: "imtiaz.akil@softbd.com",
+      cus_phone: "01870762472",
+      cus_add1: "53, Gausul Azam Road, Sector-14, Dhaka, Bangladesh",
+      cus_add2: "Dhaka",
+      cus_city: "Dhaka",
+      cus_country: "Bangladesh",
+      amount: "10.00",
+      tran_id: transactionId,
+      currency: "BDT",
+      success_url: `http://localhost:3000/api/payment/verify?id=${scoutId}`,
+      fail_url: "https://example.com/fail.php",
+      cancel_url: "https://example.com/cancel.php",
+      desc: "Lend Money",
+      type: "json",
+    });
+    return {
+      url: res.data?.payment_url,
+    };
+  } catch (error) {
+    console.log(error);
+  }
+};

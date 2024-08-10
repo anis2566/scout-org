@@ -15,10 +15,7 @@ export const authConfig = {
   secret: process.env.AUTH_SECRET,
   pages: { signIn: "/auth/sign-in", signOut: "/auth/sign-in" },
   callbacks: {
-    jwt: ({ token, user, trigger }) => {
-      if (trigger === "update") {
-        return { ...token };
-      }
+    jwt: async ({ token, user}) => {
       if (user) {
         token.role = user.role;
         token.status = user.status;
@@ -27,7 +24,7 @@ export const authConfig = {
       }
       return token;
     },
-    session: ({ session, token, user }) => {
+    session: async ({ session, token, user }) => {
       session.role = token.role;
       session.status = token.status;
       session.userId = token.userId;
