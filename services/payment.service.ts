@@ -2,7 +2,11 @@
 
 import axios from "axios";
 
-export const PAY_FOR_REGISTRATION = async (scoutId: string) => {
+type PayForRegistration = {
+  scoutId: string;
+  amount: string;
+}
+export const PAY_FOR_REGISTRATION = async ({scoutId, amount}:PayForRegistration) => {
   const transactionId = Math.floor(100000 + Math.random() * 900000).toString();
   try {
     const res = await axios.post("https://sandbox.aamarpay.com/jsonpost.php", {
@@ -15,7 +19,7 @@ export const PAY_FOR_REGISTRATION = async (scoutId: string) => {
       cus_add2: "Dhaka",
       cus_city: "Dhaka",
       cus_country: "Bangladesh",
-      amount: "10.00",
+      amount: amount,
       tran_id: transactionId,
       currency: "BDT",
       success_url: `http://localhost:3000/api/payment/verify?id=${scoutId}`,

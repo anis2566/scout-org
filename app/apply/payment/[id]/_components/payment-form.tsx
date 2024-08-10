@@ -99,7 +99,7 @@ export const PaymentForm = ({ scoutId }: PaymentFormProps) => {
 
     const handlePay = () => {
         if (scout?.id) {
-            createPayment(scout.id)
+            createPayment({scoutId:scout.id, amount:fee.toString()})
         }
     }
 
