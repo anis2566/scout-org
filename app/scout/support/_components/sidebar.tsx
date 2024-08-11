@@ -17,7 +17,6 @@ interface ChatSidebarProps {
 export const Sidebar = ({ open, onClose }: ChatSidebarProps) => {
     const { data: session } = useSession()
 
-    if(!session) return;
 
     const ChannelPreviewCustom = useCallback(
         (props: ChannelPreviewUIComponentProps) => (
@@ -31,6 +30,8 @@ export const Sidebar = ({ open, onClose }: ChatSidebarProps) => {
         ),
         [onClose],
     );
+
+    if (!session) return;
 
     return (
         <div

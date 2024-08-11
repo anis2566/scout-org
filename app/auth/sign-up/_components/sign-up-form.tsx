@@ -44,7 +44,8 @@ export const SignUpForm = () => {
                 duration: 2000
             })
             if (data?.user) {
-                router.push(`/auth/verify/${data?.user?.id}`)
+                // router.push(`/auth/verify/${data?.user?.id}`)
+                router.push(`/auth/sign-in`)
             }
         },
         onError: (error) => {

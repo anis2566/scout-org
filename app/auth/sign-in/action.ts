@@ -28,39 +28,39 @@ export const SIGN_IN_USER = async ({ values, callback }: SignInUser) => {
       throw new Error("Invalid credentials");
     }
 
-    if (!user.emailVerified) {
-      const verificationToken = await db.verificationToken.upsert({
-        where: {
-          identifier: user.id,
-        },
-        update: {
-          token: Math.floor(100000 + Math.random() * 900000).toString(),
-          expires: new Date(Date.now() + 30 * 60 * 1000),
-        },
-        create: {
-          identifier: user.id,
-          token: Math.floor(100000 + Math.random() * 900000).toString(),
-          expires: new Date(Date.now() + 30 * 60 * 1000),
-        },
-      });
+    // if (!user.emailVerified) {
+    //   // const verificationToken = await db.verificationToken.upsert({
+    //   //   where: {
+    //   //     identifier: user.id,
+    //   //   },
+    //   //   update: {
+    //   //     token: Math.floor(100000 + Math.random() * 900000).toString(),
+    //   //     expires: new Date(Date.now() + 30 * 60 * 1000),
+    //   //   },
+    //   //   create: {
+    //   //     identifier: user.id,
+    //   //     token: Math.floor(100000 + Math.random() * 900000).toString(),
+    //   //     expires: new Date(Date.now() + 30 * 60 * 1000),
+    //   //   },
+    //   // });
 
-      await resend.emails.send({
-        from: "Acme <onboarding@resend.dev>",
-        to: [values.email],
-        subject: "Account Verification",
-        react: VerifyEmail({ code: verificationToken.token }),
-      });
+    //   // await resend.emails.send({
+    //   //   from: "Acme <onboarding@resend.dev>",
+    //   //   to: [values.email],
+    //   //   subject: "Account Verification",
+    //   //   react: VerifyEmail({ code: verificationToken.token }),
+    //   // });
 
-      redirect(`/auth/verify/${user.id}`);
-    } else {
-      await signIn("credentials", {
-        email: values.email,
-        password: values.password,
-        redirectTo: callback ? callback : "/",
-      });
+    //   // redirect(`/auth/verify/${user.id}`);
+    // } else {
+    // }
+    await signIn("credentials", {
+      email: values.email,
+      password: values.password,
+      redirectTo: callback ? callback : "/",
+    });
 
-      return { success: "Login successful", user };
-    }
+    return { success: "Login successful", user };
   } catch (error) {
     if (isRedirectError(error)) {
       throw error;

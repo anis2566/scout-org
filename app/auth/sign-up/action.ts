@@ -1,16 +1,11 @@
 "use server";
 
-import { Resend } from "resend";
-
 import { db } from "@/lib/prisma";
 import { SignInSchemaType } from "../sign-in/schema";
 import { SignUpSchema } from "./schema";
 import { saltAndHashPassword } from "@/lib/utils";
-import { VerifyEmail } from "@/components/templates/email-verify";
 import streamServerClient from "@/lib/stream";
 import { User } from "next-auth";
-
-const resend = new Resend(process.env.RESEND_API_KEY);
 
 export const SIGN_UP = async (values: SignInSchemaType) => {
   const { data, success } = SignUpSchema.safeParse(values);
@@ -39,29 +34,15 @@ export const SIGN_UP = async (values: SignInSchemaType) => {
       select: {
         name: true,
         id: true,
+        email: true,
       },
     });
 
     await streamServerClient.upsertUser({
       id: newUser.id,
-      username: newUser.name || "Guest",
-      name: newUser.name || "Guest",
-    });
-
-    const verificationToken = await ctx.verificationToken.create({
-      data: {
-        identifier: newUser.id,
-        token: Math.floor(100000 + Math.random() * 900000).toString(),
-        expires: new Date(Date.now() + 30 * 60 * 1000),
-      },
-    });
-
-    await resend.emails.send({
-      from: "Acme <onboarding@resend.dev>",
-      to: [data.email],
-      subject: "Account Verification",
-      react: VerifyEmail({ code: verificationToken.token }),
-    });
+      name: data.name,
+      username: data.name
+    })
 
     return newUser;
   });
@@ -77,5 +58,5 @@ export const CREATE_STREAM_USER = async (user: User) => {
     id: user.id ?? "",
     username: user.name || "Guest",
     name: user.name || "Guest",
-  })
+  });
 };

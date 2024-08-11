@@ -28,7 +28,7 @@ export const ChatChannel = ({ open, openSidebar }: ChatChannelProps) => {
                 // Create or get the channel
                 const channel = client.channel("messaging", {
                     members: [queryUser, session.userId],
-                    name: "Support",
+                    name: "Admin",
                 });
 
                 await channel.create();
