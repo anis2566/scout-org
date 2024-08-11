@@ -40,7 +40,7 @@ export default function ScoutLayout({
                 )}
             >
                 {
-                    status === "Pending" && !supportPage ? <Pending /> : children
+                    status === "Pending" && !supportPage && !isNoLayout ? <Pending adminId={adminId} /> : children
                 }
             </main>
         </>

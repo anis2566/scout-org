@@ -3,11 +3,12 @@
 import { Menu } from "lucide-react";
 import { useEffect } from "react";
 import { Channel, ChannelHeader, ChannelHeaderProps, MessageInput, MessageList, useChatContext, Window } from "stream-chat-react"
-
-import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
 import { useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
+
+import { Button } from "@/components/ui/button";
+
+import { cn } from "@/lib/utils";
 
 interface ChatChannelProps {
     open: boolean;

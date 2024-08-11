@@ -6,6 +6,8 @@ import { SignUpSchema } from "./schema";
 import { saltAndHashPassword } from "@/lib/utils";
 import streamServerClient from "@/lib/stream";
 import { User } from "next-auth";
+import { Knock } from "@knocklabs/node";
+const knock = new Knock(process.env.NEXT_PUBLIC_KNOCK_API_KEY);
 
 export const SIGN_UP = async (values: SignInSchemaType) => {
   const { data, success } = SignUpSchema.safeParse(values);
@@ -31,18 +33,18 @@ export const SIGN_UP = async (values: SignInSchemaType) => {
         ...data,
         password: hashedPassword,
       },
-      select: {
-        name: true,
-        id: true,
-        email: true,
-      },
+    });
+
+    await knock.users.identify(newUser.id, {
+      name: newUser.name ?? "Guest",
+      avatar: newUser.image,
     });
 
     await streamServerClient.upsertUser({
       id: newUser.id,
       name: data.name,
-      username: data.name
-    })
+      username: data.name,
+    });
 
     return newUser;
   });

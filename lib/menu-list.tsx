@@ -97,9 +97,9 @@ export function getMenuList(pathname: string): Group[] {
               icon: Radio,
             },
             {
-              href: "/dashboard/scout/list",
+              href: "/dashboard/scout",
               label: "List",
-              active: pathname === "/dashboard/scout/list",
+              active: pathname === "/dashboard/scout",
               icon: List,
             },
             {

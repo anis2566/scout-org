@@ -1,10 +1,11 @@
 "use server";
 
-import { db } from "@/lib/prisma";
 import { Role, Section, Status } from "@prisma/client";
+
+import { db } from "@/lib/prisma";
 import { ScoutSchema, ScoutSchemaType } from "./schema";
-import { auth } from "@/auth";
-import { GET_USER } from "@/services/user.service";
+import { GET_ADMIN, GET_USER } from "@/services/user.service";
+import { sendNotification } from "@/services/notification.service";
 
 export const GET_UNITS = async (section: Section) => {
   const units = await db.unit.findMany({
@@ -72,7 +73,7 @@ export const CREATE_SCOUT = async (values: ScoutSchemaType) => {
     throw new Error("This unit is full of scout.");
   }
 
-  const {user} = await GET_USER()
+  const { user } = await GET_USER();
 
   const { preferedUnit, ...rest } = data;
   const newScout = await db.scout.create({
@@ -85,7 +86,7 @@ export const CREATE_SCOUT = async (values: ScoutSchemaType) => {
     },
   });
 
- const updatedUser = await db.user.update({
+  const updatedUser = await db.user.update({
     where: {
       id: user.id,
     },
@@ -95,19 +96,19 @@ export const CREATE_SCOUT = async (values: ScoutSchemaType) => {
     },
   });
 
-  // const { adminClerkId } = await getAdmin();
-  // await sendNotification({
-  //   trigger: "scout-request",
-  //   actor: {
-  //     id: clerkId,
-  //     name: newScout.name,
-  //   },
-  //   recipients: [adminClerkId],
-  //   data: {
-  //     name: newScout.name,
-  //     redirectUrl: `/dashboard/scout/request`,
-  //   },
-  // });
+  const { admin } = await GET_ADMIN();
+  await sendNotification({
+    trigger: "scout-request",
+    actor: {
+      id: user.id,
+      name: newScout.name,
+    },
+    recipients: [admin.id],
+    data: {
+      name: newScout.name,
+      redirectUrl: `/dashboard/scout/request`,
+    },
+  });
 
   // if (unit.leaderId) {
   //   await sendNotification({
@@ -126,7 +127,7 @@ export const CREATE_SCOUT = async (values: ScoutSchemaType) => {
 
   return {
     success: "Registration successfull",
-    user:updatedUser,
-    scoutId: newScout.id
+    user: updatedUser,
+    scoutId: newScout.id,
   };
 };

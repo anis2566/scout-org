@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { Metadata } from "next";
-import { Section } from "@prisma/client";
+import { Section, Status } from "@prisma/client";
 
 import {
     Breadcrumb,
@@ -10,16 +10,16 @@ import {
     BreadcrumbPage,
     BreadcrumbSeparator
 } from "@/components/ui/breadcrumb";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 
-import { ContentLayout } from "../_components/content-layout";
 import { db } from "@/lib/prisma";
-import { Header } from "@/components/header";
-import { UnitList } from "./_components/unit-list";
+import { ContentLayout } from "../../_components/content-layout";
+import { Header } from "../request/_components/header";
 import { CustomPagination } from "@/components/custom-pagination";
+import { ScoutList } from "./_components/scout-list";
 
 export const metadata: Metadata = {
-    title: "APBn Scouts | Units",
+    title: "APBn Scouts | Suspended Scouts",
     description: "Apbn scouts group",
 };
 
@@ -32,23 +32,19 @@ interface Props {
     }
 };
 
-
-const Units = async ({ searchParams }: Props) => {
+const SuspendedScoutList = async ({ searchParams }: Props) => {
     const { section, search, page, perPage } = searchParams
     const itemsPerPage = parseInt(perPage) || 5;
     const currentPage = parseInt(page) || 1;
 
-    const units = await db.unit.findMany({
+    const scouts = await db.scout.findMany({
         where: {
+            status: Status.Suspended,
             ...(section && { section }),
             ...(search && { name: { contains: search, mode: "insensitive" } })
         },
         include: {
-            scouts: {
-                select: {
-                    id: true
-                }
-            }
+            unit: true
         },
         orderBy: {
             createdAt: "desc"
@@ -57,17 +53,18 @@ const Units = async ({ searchParams }: Props) => {
         take: itemsPerPage,
     })
 
-    const totalUnit = await db.unit.count({
+    const totalScout = await db.scout.count({
         where: {
+            status: Status.Suspended,
             ...(section && { section }),
             ...(search && { name: { contains: search, mode: "insensitive" } })
-        }
+        },
     })
 
-    const totalPage = Math.round(totalUnit / itemsPerPage)
+    const totalPage = Math.round(totalScout / itemsPerPage)
 
     return (
-        <ContentLayout title="Unit">
+        <ContentLayout title="Scout">
             <Breadcrumb>
                 <BreadcrumbList>
                     <BreadcrumbItem>
@@ -77,19 +74,19 @@ const Units = async ({ searchParams }: Props) => {
                     </BreadcrumbItem>
                     <BreadcrumbSeparator />
                     <BreadcrumbItem>
-                        <BreadcrumbPage>Units</BreadcrumbPage>
+                        <BreadcrumbPage>Suspended List</BreadcrumbPage>
                     </BreadcrumbItem>
                 </BreadcrumbList>
             </Breadcrumb>
 
             <Card className="mt-4">
                 <CardHeader>
-                    <CardTitle>Unit List</CardTitle>
-                    <CardDescription>A collection of your unit.</CardDescription>
+                    <CardTitle>Suspended List</CardTitle>
+                    <CardDescription>A collection of verified scout.</CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
                     <Header />
-                    <UnitList units={units} />
+                    <ScoutList scouts={scouts} />
                     <CustomPagination totalPage={totalPage} />
                 </CardContent>
             </Card>
@@ -97,4 +94,4 @@ const Units = async ({ searchParams }: Props) => {
     )
 }
 
-export default Units
+export default SuspendedScoutList

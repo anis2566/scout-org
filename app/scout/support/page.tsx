@@ -1,7 +1,8 @@
 import { Metadata } from "next";
+import { Suspense } from "react";
+
 import { ChatPage } from "./_components/chat-page";
 import { ContentLayout } from "../_components/content-layout";
-import { Suspense } from "react";
 import { Loader } from "@/components/loader";
 
 export const metadata: Metadata = {

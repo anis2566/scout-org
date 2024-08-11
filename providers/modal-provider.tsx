@@ -8,6 +8,17 @@ import { AssignCouponModal } from "@/app/dashboard/utils/coupon/_components/crea
 import { UpdateCouponModal } from "@/app/dashboard/utils/coupon/_components/update-coupon-modal"
 import { DeleteCouponModal } from "@/app/dashboard/utils/coupon/_components/delete-coupon-modal"
 
+// SCOUT
+import { ScoutStatusModal } from "@/app/dashboard/scout/request/_components/status-modal"
+import { DeleteScoutModal } from "@/app/dashboard/scout/request/_components/delete-modal"
+import { ScoutCardModal } from "@/app/dashboard/scout/_components/card-modal"
+import { RemoveScoutModal } from "@/app/dashboard/unit/[id]/_components/remove-scout-modal"
+
+// UNIT
+import { AssignUnitLeaderModal } from "@/app/dashboard/unit/[id]/_components/assign-leader-modal"
+import { RemoveLeaderModal } from "@/app/dashboard/unit/[id]/_components/remove-leader-modal"
+import { MigrationModal } from "@/app/dashboard/unit/[id]/_components/migration-modal"
+
 
 export const ModalProvider = () => {
     return (
@@ -21,6 +32,17 @@ export const ModalProvider = () => {
             <AssignCouponModal />
             <UpdateCouponModal />
             <DeleteCouponModal />
+
+            {/* SCOUT */}
+            <ScoutStatusModal />
+            <DeleteScoutModal />
+            <ScoutCardModal />
+            <RemoveScoutModal />
+
+            {/* UNIT */}
+            <AssignUnitLeaderModal />
+            <RemoveLeaderModal />
+            <MigrationModal />
         </>
     )
 }
