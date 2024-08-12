@@ -8,7 +8,6 @@ import { db } from "./lib/prisma";
 import { SignInSchema } from "./app/auth/sign-in/schema";
 import { GET_USER_BY_EMAIL } from "./services/user.service";
 import { VERIFY_EMAIL } from "./app/auth/sign-in/action";
-import { CREATE_STREAM_USER } from "./app/auth/sign-up/action";
 
 export const authConfig = {
   adapter: PrismaAdapter(db),
@@ -30,6 +29,7 @@ export const authConfig = {
       session.status = token.status;
       session.userId = token.userId;
       session.isVerified = token.isVerified;
+      session.user.role = token.role;
       return session;
     },
   },

@@ -3,6 +3,7 @@
 import { auth } from "@/auth";
 import { db } from "@/lib/prisma";
 import { Role } from "@prisma/client";
+import { redirect } from "next/navigation";
 
 export const GET_USER_BY_EMAIL = async (email: string) => {
   const user = await db.user.findUnique({
@@ -19,6 +20,10 @@ export const GET_USER_BY_EMAIL = async (email: string) => {
 
 export const GET_USER = async () => {
   const session = await auth();
+
+  if (!session?.userId) {
+    redirect("/auth/sign-in");
+  }
 
   const user = await db.user.findUnique({
     where: {
@@ -45,4 +50,29 @@ export const GET_ADMIN = async () => {
   }
 
   return { admin };
+};
+
+export const GET_SCOUT = async () => {
+  const session = await auth();
+
+  if (!session?.userId) {
+    redirect("/auth/sign-in");
+  }
+
+  const scout = await db.scout.findFirst({
+    where: {
+      userId: session.userId
+    },
+    include: {
+      unit: true,
+    },
+  });
+
+  if (!scout) {
+    throw new Error("Scout not found");
+  }
+
+  return {
+    scout,
+  };
 };

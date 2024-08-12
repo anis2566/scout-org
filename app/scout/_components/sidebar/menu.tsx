@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Ellipsis, LogOut, Settings } from "lucide-react";
+import { Ellipsis} from "lucide-react";
 import { usePathname } from "next/navigation";
 
 import { cn } from "@/lib/utils";
@@ -15,8 +15,8 @@ import {
   TooltipProvider
 } from "@/components/ui/tooltip";
 import { CollapseMenuButton } from "./collapse-menu-button";
-// import { useUser } from "@clerk/nextjs";
-// import { Role } from "@/schema/scout.schema";
+import { useSession } from "next-auth/react";
+import { Role } from "@prisma/client";
 
 interface MenuProps {
   isOpen: boolean | undefined;
@@ -25,9 +25,9 @@ interface MenuProps {
 export function Menu({ isOpen }: MenuProps) {
   const pathname = usePathname();
   const menuList = getMenuListScout(pathname);
-//   const { user } = useUser()
-//   const role = user?.publicMetadata?.role as string;
-//   const isLeader = role?.split(" ")?.includes("unitLeader")
+  const session = useSession()
+
+  const isLeader = session.data?.role === Role.ScoutLeader
 
   return (
     <ScrollArea className="[&>div>div[style]]:!block">
@@ -95,16 +95,7 @@ export function Menu({ isOpen }: MenuProps) {
                       </TooltipProvider>
                     </div>
                   ) : (
-                    // <div className={cn("w-full", label === "Unit" && !isLeader ? "hidden" : "")} key={index}>
-                    //   <CollapseMenuButton
-                    //     icon={Icon}
-                    //     label={label}
-                    //     active={active}
-                    //     submenus={submenus}
-                    //     isOpen={isOpen}
-                    //   />
-                    // </div>
-                    <div className={cn("w-full")} key={index}>
+                    <div className={cn("w-full", label === "Unit" && !isLeader ? "hidden" : "")} key={index}>
                       <CollapseMenuButton
                         icon={Icon}
                         label={label}

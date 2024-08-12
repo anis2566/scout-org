@@ -9,6 +9,7 @@ declare module "next-auth" {
     status: Status;
     isVerified: boolean;
     userId: string;
+    user: User
   }
 
   interface User extends DefaultUser {

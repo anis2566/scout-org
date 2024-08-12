@@ -114,12 +114,6 @@ export function getMenuList(pathname: string): Group[] {
               active: pathname === "/dashboard/scout/suspended",
               icon: BadgeX,
             },
-            {
-              href: "/dashboard/scout/award",
-              label: "Award",
-              active: pathname === "/dashboard/scout/award",
-              icon: Medal,
-            },
           ],
         },
         {
@@ -135,9 +129,9 @@ export function getMenuList(pathname: string): Group[] {
               icon: Pen,
             },
             {
-              href: "/dashboard/event/list",
+              href: "/dashboard/event",
               label: "List",
-              active: pathname === "/dashboard/event/list",
+              active: pathname === "/dashboard/event",
               icon: List,
             },
           ],
@@ -155,9 +149,29 @@ export function getMenuList(pathname: string): Group[] {
               icon: Pen,
             },
             {
-              href: "/dashboard/training/list",
+              href: "/dashboard/training",
               label: "List",
-              active: pathname === "/dashboard/training/list",
+              active: pathname === "/dashboard/training",
+              icon: List,
+            },
+          ],
+        },
+        {
+          href: "",
+          label: "Award",
+          active: pathname.includes("/dashboard/award"),
+          icon: Medal,
+          submenus: [
+            {
+              href: "/dashboard/award/create",
+              label: "Create",
+              active: pathname === "/dashboard/award/create",
+              icon: Pen,
+            },
+            {
+              href: "/dashboard/award",
+              label: "List",
+              active: pathname === "/dashboard/award",
               icon: List,
             },
           ],

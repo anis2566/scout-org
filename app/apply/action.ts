@@ -110,20 +110,20 @@ export const CREATE_SCOUT = async (values: ScoutSchemaType) => {
     },
   });
 
-  // if (unit.leaderId) {
-  //   await sendNotification({
-  //     trigger: "scout-request-leader",
-  //     actor: {
-  //       id: clerkId,
-  //       name: newScout.name,
-  //     },
-  //     recipients: [unit.leader?.user?.clerkId || ""],
-  //     data: {
-  //       name: newScout.name,
-  //       redirectUrl: `/scout/unit/request`,
-  //     },
-  //   });
-  // }
+  if (unit.leaderId) {
+    await sendNotification({
+      trigger: "scout-request-leader",
+      actor: {
+        id: user.id,
+        name: newScout.name,
+      },
+      recipients: [unit.leader?.userId || ""],
+      data: {
+        name: newScout.name,
+        redirectUrl: `/scout/unit/request`,
+      },
+    });
+  }
 
   return {
     success: "Registration successfull",

@@ -64,7 +64,7 @@ const Units = async ({ searchParams }: Props) => {
         }
     })
 
-    const totalPage = Math.round(totalUnit / itemsPerPage)
+    const totalPage = Math.ceil(totalUnit / itemsPerPage)
 
     return (
         <ContentLayout title="Unit">

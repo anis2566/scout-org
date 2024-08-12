@@ -1,5 +1,7 @@
+"use client"
+
 import { Unit } from "@prisma/client"
-import { EllipsisVertical, Eye, Pen } from "lucide-react"
+import { EllipsisVertical, Eye, Pen, Trash2 } from "lucide-react"
 import Link from "next/link"
 
 import {
@@ -20,6 +22,7 @@ import {
 import { Button } from "@/components/ui/button"
 
 import { Empty } from "@/components/empty"
+import { useUnit } from "@/hooks/use-unit"
 
 interface UnitWithScout extends Unit {
     scouts: { id: string; }[]
@@ -30,6 +33,8 @@ interface UnitListProps {
 }
 
 export const UnitList = ({ units }: UnitListProps) => {
+    const {onOpen} = useUnit()
+
     return (
         <>
             {
@@ -77,8 +82,9 @@ export const UnitList = ({ units }: UnitListProps) => {
                                                             Edit
                                                         </Link>
                                                     </DropdownMenuItem>
-                                                    <DropdownMenuItem className="w-flex items-center gap-x-3" asChild>
-                                                        {/* <ActionButton unitId={unit.id} /> */}
+                                                    <DropdownMenuItem className="flex items-center gap-x-3 text-rose-500 group" onClick={() => onOpen(unit.id)}>
+                                                        <Trash2 className="w-5 h-5 group-hover:text-rose-600" />
+                                                        <p className="group-hover:text-rose-600">Delete</p>
                                                     </DropdownMenuItem>
                                                 </DropdownMenuContent>
                                             </DropdownMenu>

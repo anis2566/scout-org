@@ -46,7 +46,7 @@ enum CouponStatus {
   Inactive
 }
 
-enum MigrationStatus {
+enum AppStatus {
   Pending
   Approved
   Rejected
@@ -197,8 +197,8 @@ model Scout {
 
   // migrations Migration[]
   // bans Ban[]
-  // eventApplications EventApplication[]
-  // trainingApplications TrainingApplication[]
+  eventApplications EventApplication[]
+  trainingApplications TrainingApplication[]
   // awards ScoutAward[]
 
   createdAt DateTime @default(now())
@@ -223,6 +223,87 @@ model Coupon {
   value Int
   expire DateTime @default(now())
   status CouponStatus @default(Inactive)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+
+model Event {
+  id String @id @default(uuid())
+  title String
+  description String
+  venue String
+  imageUrl String
+  entryFee Int
+  eventStart DateTime
+  eventEnd DateTime
+  registrationStart DateTime
+  registrationEnd DateTime
+
+  scouts EventApplication[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+
+model EventApplication {
+  id String @id @default(uuid())
+
+  scoutId String?
+  scout Scout? @relation(fields: [scoutId], references: [id])
+
+  eventId String?
+  event Event? @relation(fields: [eventId], references: [id])
+
+  paymentStatus PaymentStatus @default(Unpaid)
+  status AppStatus @default(Pending)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+
+model Training {
+  id String @id @default(uuid())
+  title String
+  description String
+  venue String
+  imageUrl String
+  limit Int
+  type TrainingType
+  trainingStart DateTime
+  trainingEnd DateTime
+
+  applications TrainingApplication[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+
+model TrainingApplication {
+  id String @id @default(uuid())
+  attachments String[]
+
+  scoutId String?
+  scout Scout? @relation(fields: [scoutId], references: [id])
+
+  trainingId String?
+  training Training? @relation(fields: [trainingId], references: [id])
+  
+  status AppStatus @default(Pending)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+
+model Award {
+  id String @id @default(uuid())
+  title String
+  imageUrl String
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
