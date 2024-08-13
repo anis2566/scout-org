@@ -1,6 +1,6 @@
 "use client"
 
-import { CreditCard, EllipsisVertical, Eye, Pen, RefreshCcw, Trash2 } from "lucide-react"
+import { CreditCard, EllipsisVertical, Eye, Medal, Pen, RefreshCcw, Trash2 } from "lucide-react"
 import Link from "next/link"
 import { Scout, Status, Unit } from "@prisma/client"
 
@@ -25,6 +25,7 @@ import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 import { useScoutCard, useScoutDelete, useScoutStatus } from "@/hooks/use-scout"
 import { Empty } from "@/components/empty"
+import { useAssignAward } from "@/hooks/use-award"
 
 interface ScoutWithUnit extends Scout {
     unit: Unit | null
@@ -39,6 +40,7 @@ export const ScoutList = ({ scouts }: RequestListProps) => {
     const { onOpen } = useScoutStatus()
     const { onOpen: onOpenDelete } = useScoutDelete()
     const { onOpen: onOpenCard } = useScoutCard()
+    const {onOpen: onOpenAward} = useAssignAward()
 
     return (
         <>
@@ -122,6 +124,10 @@ export const ScoutList = ({ scouts }: RequestListProps) => {
                                                     <DropdownMenuItem className="w-flex items-center gap-x-3" onClick={() => onOpenCard(scout.id)}>
                                                         <CreditCard className="w-4 h-4" />
                                                         Card Status
+                                                    </DropdownMenuItem>
+                                                    <DropdownMenuItem className="w-flex items-center gap-x-3" onClick={() => onOpenAward(scout.id)}>
+                                                        <Medal className="w-4 h-4" />
+                                                        Assign Award
                                                     </DropdownMenuItem>
                                                     <DropdownMenuItem className="w-flex items-center gap-x-3" onClick={() => onOpenDelete(scout.id)}>
                                                         <Trash2 className="text-rose-500 w-4 h-4" />

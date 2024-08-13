@@ -33,7 +33,7 @@ interface EventWithApplication extends Event {
 }
 
 interface Props {
-    events: Event[]
+    events: EventWithApplication[]
 }
 
 export const EventList = ({ events }: Props) => {
@@ -63,7 +63,7 @@ export const EventList = ({ events }: Props) => {
                                         <TableCell className="py-3">{event.title}</TableCell>
                                         <TableCell className="py-3">{format(event.eventStart, "dd MMM yyyy")} - {format(event.eventEnd, "dd MMM yyyy")}</TableCell>
                                         <TableCell className="py-3">&#2547;{event.entryFee}</TableCell>
-                                        <TableCell className="py-3">{5}</TableCell>
+                                        <TableCell className="py-3">{event.applications.length}</TableCell>
                                         <TableCell className="py-3">
                                             <Badge
                                                 className={cn(

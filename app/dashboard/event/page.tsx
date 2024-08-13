@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Metadata } from "next";
+import { AppStatus } from "@prisma/client";
 
 import {
     Breadcrumb,
@@ -39,16 +40,16 @@ const Events = async ({ searchParams }: Props) => {
         where: {
             ...(search && { title: { contains: search, mode: "insensitive" } })
         },
-        // include: {
-        //     applications: {
-        //         where: {
-        //             status: MigrationStatus.Approved
-        //         },
-        //         select: {
-        //             id: true
-        //         }
-        //     }
-        // },
+        include: {
+            applications: {
+                where: {
+                    status: AppStatus.Approved
+                },
+                select: {
+                    id: true
+                }
+            }
+        },
         orderBy: {
             createdAt: "desc"
         },

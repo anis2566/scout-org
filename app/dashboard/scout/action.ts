@@ -52,3 +52,49 @@ export const UPDATE_SCOUT_CARD_STATUS = async ({
     success: "Status updated",
   };
 };
+
+export const GET_AWARDS = async (title: string) => {
+  const awards = await db.award.findMany({
+    where: {
+      ...(title && { title: { contains: title, mode: "insensitive" } }),
+    },
+    orderBy: {
+      createdAt: "desc",
+    },
+  });
+
+  return { awards };
+};
+
+type AssignAward = {
+  scoutId: string;
+  awardId: string;
+};
+
+export const ASSIGN_AWARD = async ({ scoutId, awardId }: AssignAward) => {
+  const isAwarded = await db.scoutAward.findUnique({
+    where: {
+      scoutId_awardId: {
+        awardId,
+        scoutId,
+      },
+    },
+  });
+
+  if (isAwarded) {
+    throw new Error("Already have this award");
+  }
+
+  await db.scoutAward.create({
+    data: {
+      scoutId,
+      awardId,
+    },
+  });
+
+  revalidatePath("/dashboard/scout");
+
+  return {
+    success: "Award assigned",
+  };
+};

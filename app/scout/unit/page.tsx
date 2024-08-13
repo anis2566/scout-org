@@ -1,4 +1,6 @@
 import Link from "next/link";
+import { AppStatus, Status } from "@prisma/client";
+import { Metadata } from "next";
 import { redirect } from "next/navigation";
 
 import {
@@ -10,17 +12,18 @@ import {
     BreadcrumbSeparator
 } from "@/components/ui/breadcrumb";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+
 import { GET_SCOUT } from "@/services/user.service";
 import { db } from "@/lib/prisma";
-import { Status } from "@prisma/client";
 import { ContentLayout } from "../_components/content-layout";
-import { Metadata } from "next";
+import { Header } from "./_components/header";
+import { CustomPagination } from "@/components/custom-pagination";
+import { ScoutList } from "./_components/scout-list";
 
 export const metadata: Metadata = {
     title: "APBn Scouts | Manage Unit",
     description: "Apbn scouts group",
 };
-
 
 interface Props {
     searchParams: {
@@ -44,7 +47,7 @@ const Unit = async ({ searchParams }: Props) => {
         include: {
             scouts: {
                 where: {
-                    status: Status.Active || Status.Verified,
+                    status: Status.Active,
                     id: {
                         not: scout.id
                     }
@@ -66,23 +69,23 @@ const Unit = async ({ searchParams }: Props) => {
                 not: scout.id
             },
             status: {
-                equals: Status.Active || Status.Verified
+                equals: Status.Active
             }
         },
-        // include: {
-        //     migrations: {
-        //         where: {
-        //             status: MigrationStatus.Pending
-        //         },
-        //         take: 1
-        //     },
-        //     bans: {
-        //         where: {
-        //             status: MigrationStatus.Pending
-        //         },
-        //         take: 1
-        //     },
-        // },
+        include: {
+            migrations: {
+                where: {
+                    status: AppStatus.Pending
+                },
+                take: 1
+            },
+            bans: {
+                where: {
+                    status: AppStatus.Pending
+                },
+                take: 1
+            },
+        },
         orderBy: {
             createdAt: "desc"
         },
@@ -98,12 +101,12 @@ const Unit = async ({ searchParams }: Props) => {
                 not: scout.id
             },
             status: {
-                equals: Status.Active || Status.Verified
+                equals: Status.Active
             }
         }
     })
 
-    const totalPage = Math.round(totalScout / itemsPerPage)
+    const totalPage = Math.ceil(totalScout / itemsPerPage)
 
     return (
         <ContentLayout title="Unit">
@@ -131,9 +134,9 @@ const Unit = async ({ searchParams }: Props) => {
                         <h1 className="text-xl font-semibold">Total Scout <span className="text-primary font-bold">#{unit?.scouts.length}</span></h1>
                         <h1 className="text-lg font-semibold">Available Scout <span className="text-primary font-bold">#{unit.limit - unit?.scouts.length}</span></h1>
                     </div>
-                    {/* <Header /> */}
-                    {/* <ScoutList scouts={scouts} /> */}
-                    {/* <CustomPagination totalPage={totalPage} /> */}
+                    <Header />
+                    <ScoutList scouts={scouts} />
+                    <CustomPagination totalPage={totalPage} />
                 </CardContent>
             </Card>
         </ContentLayout>

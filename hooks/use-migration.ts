@@ -1,4 +1,4 @@
-import { Section, Unit } from "@prisma/client";
+import { Migration, Section, Unit } from "@prisma/client";
 import { create } from "zustand";
 
 interface MigrationState {
@@ -55,23 +55,23 @@ export const useMigrationDelete = create<MigrationStatusState>()((set) => ({
   onClose: () => set({ open: false, migrationId: "" }),
 }));
 
-// interface MigrationWithScout extends Migration {
-//   scout: {
-//     name: string;
-//   } | null;
-//   unit: Unit | null;
-// }
+interface MigrationWithScout extends Migration {
+  scout: {
+    name: string;
+  } | null;
+  unit: Unit | null;
+}
 
-// interface MigrationVeiwState {
-//   open: boolean;
-//   migration: MigrationWithScout | null;
-//   onOpen: (migration: MigrationWithScout) => void;
-//   onClose: () => void;
-// }
+interface MigrationVeiwState {
+  open: boolean;
+  migration: MigrationWithScout | null;
+  onOpen: (migration: MigrationWithScout) => void;
+  onClose: () => void;
+}
 
-// export const useMigrationView = create<MigrationVeiwState>()((set) => ({
-//   open: false,
-//   migration: null,
-//   onOpen: (migration) => set({ open: true, migration }),
-//   onClose: () => set({ open: false, migration: null }),
-// }));
+export const useMigrationView = create<MigrationVeiwState>()((set) => ({
+  open: false,
+  migration: null,
+  onOpen: (migration) => set({ open: true, migration }),
+  onClose: () => set({ open: false, migration: null }),
+}));

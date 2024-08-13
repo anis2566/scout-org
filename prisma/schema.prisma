@@ -74,6 +74,20 @@ enum PublishStatus {
   Unpublish
 }
 
+enum Designation {
+  President
+  VicePresident
+  Secretary
+  JointSecretary
+  Treasrer
+  GroupScoutLeader
+  Advisor
+  Sponsor
+  UnitLeader
+  AssistantUnitLeader
+  Member
+}
+
 
 model User {
   id            String          @id @default(cuid())
@@ -134,7 +148,7 @@ model VerificationToken {
   leader Scout? @relation(name: "UnitLeader", fields: [leaderId], references: [id])
 
   scouts Scout[]
-  // migrations Migration[]
+  migrations Migration[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -195,11 +209,11 @@ model Scout {
 
   leadingUnit Unit? @relation(name: "UnitLeader")
 
-  // migrations Migration[]
-  // bans Ban[]
+  migrations Migration[]
+  bans Ban[]
   eventApplications EventApplication[]
   trainingApplications TrainingApplication[]
-  // awards ScoutAward[]
+  awards ScoutAward[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -241,7 +255,7 @@ model Event {
   registrationStart DateTime
   registrationEnd DateTime
 
-  scouts EventApplication[]
+  applications EventApplication[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -305,6 +319,82 @@ model Award {
   title String
   imageUrl String
 
+  awards ScoutAward[]
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
+
+model Migration {
+  id String @id @default(uuid())
+  reason String
+
+  scoutId String?
+  scout Scout? @relation(fields: [scoutId], references: [id])
+
+  unitId String?
+  unit Unit? @relation(fields: [unitId], references: [id])
+
+  status AppStatus @default(Pending)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+
+model Ban {
+  id String @id @default(uuid())
+  reason String
+
+  scoutId String?
+  scout Scout? @relation(fields: [scoutId], references: [id])
+
+  status AppStatus @default(Pending)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+
+model ScoutAward {
+  scoutId String
+  scout Scout @relation(fields: [scoutId], references: [id])
+
+  awardId String
+  award Award @relation(fields: [awardId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  @@id([scoutId, awardId])
+}
+
+
+model Committee {
+  id String @id @default(uuid())
+  title String
+  section CommiteeSection
+  start DateTime @default(now())
+  end DateTime
+
+  members CommitteeMember[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+
+model CommitteeMember {
+  id String @id @default(uuid())
+  name String
+  designation Designation
+  imageUrl String
+
+  committeeId String
+  committee Committee @relation(fields: [committeeId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+

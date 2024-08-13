@@ -98,7 +98,7 @@ export function getMenuList(pathname: string): Group[] {
             },
             {
               href: "/dashboard/scout",
-              label: "List",
+              label: "Active",
               active: pathname === "/dashboard/scout",
               icon: List,
             },
@@ -215,15 +215,15 @@ export function getMenuList(pathname: string): Group[] {
           icon: UserCog,
           submenus: [
             {
-              href: "/dashboard/commitee/create",
+              href: "/dashboard/committee/create",
               label: "Create",
-              active: pathname === "/dashboard/commitee/create",
+              active: pathname === "/dashboard/committee/create",
               icon: Pen,
             },
             {
-              href: "/dashboard/commitee/list",
+              href: "/dashboard/committee",
               label: "List",
-              active: pathname === "/dashboard/commitee/list",
+              active: pathname === "/dashboard/committee",
               icon: List,
             },
           ],

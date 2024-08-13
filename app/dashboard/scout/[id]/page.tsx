@@ -46,17 +46,17 @@ const ScoutDetails = async ({ params: { id } }: Props) => {
 
     if (!scout) redirect("/dashboard")
 
-    // const awards = await db.scoutAward.findMany({
-    //     where: {
-    //         scoutId: scout.id
-    //     },
-    //     include: {
-    //         award: true
-    //     },
-    //     orderBy: {
-    //         createdAt: "desc"
-    //     }
-    // })
+    const awards = await db.scoutAward.findMany({
+        where: {
+            scoutId: scout.id
+        },
+        include: {
+            award: true
+        },
+        orderBy: {
+            createdAt: "desc"
+        }
+    })
 
     return (
         <ContentLayout title="Scout">
@@ -187,7 +187,7 @@ const ScoutDetails = async ({ params: { id } }: Props) => {
                             <CardTitle>Achievements</CardTitle>
                         </CardHeader>
                         <CardContent className="space-y-8">
-                            {/* {
+                            {
                                 awards.length < 1 ? (
                                     <div className="min-h-[20vh] flex items-center justify-center">
                                         <p className="italic text-muted-foreground">No Award Yet.</p>
@@ -204,7 +204,7 @@ const ScoutDetails = async ({ params: { id } }: Props) => {
                                         </div>
                                     </div>
                                 ))
-                            } */}
+                            }
                         </CardContent>
                     </Card>
                 </div>

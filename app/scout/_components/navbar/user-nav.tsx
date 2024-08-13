@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { LayoutGrid, LogOut, User } from "lucide-react";
+import { LogOut, User } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -20,10 +20,15 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger
 } from "@/components/ui/dropdown-menu";
-import { useSession } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 
 export function UserNav() {
-    const {data} = useSession()
+  const { data: session } = useSession()
+
+  const handleSignOut = async () => {
+    await signOut();
+  };
+
   return (
     <DropdownMenu>
       <TooltipProvider disableHoverableContent>
@@ -35,8 +40,8 @@ export function UserNav() {
                 className="relative h-8 w-8 rounded-full"
               >
                 <Avatar className="h-8 w-8">
-                  <AvatarImage src={data?.user?.image || ""} alt="Avatar" />
-                  <AvatarFallback className="bg-transparent">{data?.user?.name?.charAt(0) || "S"}</AvatarFallback>
+                  <AvatarImage src={session?.user?.image || ""} alt="Avatar" />
+                  <AvatarFallback className="bg-transparent">{session?.user?.name?.charAt(0) || "S"}</AvatarFallback>
                 </Avatar>
               </Button>
             </DropdownMenuTrigger>
@@ -44,20 +49,28 @@ export function UserNav() {
           <TooltipContent side="bottom">Profile</TooltipContent>
         </Tooltip>
       </TooltipProvider>
-
       <DropdownMenuContent className="w-56" align="end" forceMount>
         <DropdownMenuLabel className="font-normal">
           <div className="flex flex-col space-y-1">
-            <p className="text-sm font-medium leading-none">{data?.user?.name}</p>
+            <p className="text-sm font-medium leading-none">{session?.user?.name}</p>
             <p className="text-xs leading-none text-muted-foreground">
-              {data?.user?.email}
+              {session?.user?.email}
             </p>
           </div>
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
+        <DropdownMenuGroup>
+          <DropdownMenuItem className="hover:cursor-pointer" asChild>
+            <Link href="/scout/profile" className="flex items-center">
+              <User className="w-4 h-4 mr-3 text-muted-foreground" />
+              Profile
+            </Link>
+          </DropdownMenuItem>
+        </DropdownMenuGroup>
         <DropdownMenuSeparator />
-        <DropdownMenuItem>
-          Sign Out
+        <DropdownMenuItem className="hover:cursor-pointer" onClick={handleSignOut}>
+          <LogOut className="w-4 h-4 mr-3 text-muted-foreground" />
+          Sign out
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
