@@ -1,7 +1,7 @@
 import { Designation } from "@prisma/client";
 import { z } from "zod";
 
-export const CommitteeMemberSchema = z.object({
+export const CommitteeMember = z.object({
   committeeId: z.string().min(1, { message: "required" }),
   name: z.string().min(1, { message: "required" }),
   designation: z
@@ -12,4 +12,4 @@ export const CommitteeMemberSchema = z.object({
   imageUrl: z.string().min(1, { message: "required" }),
 });
 
-export type CommitteeMemberSchemaType = z.infer<typeof CommitteeMemberSchema>;
+export type CommitteeMemberType = z.infer<typeof CommitteeMember>;
