@@ -33,7 +33,7 @@ import {
     SelectValue,
 } from "@/components/ui/select"
 
-import { CommitteeMemberSchema } from "../schema"
+import { CommitteeMember } from "../schema"
 import { useCommitteeMember } from "@/hooks/use-committee-member"
 import { UploadButton } from "@/lib/uploadthing"
 import { ADD_MEMBER } from "../action"
@@ -41,8 +41,8 @@ import { ADD_MEMBER } from "../action"
 export const AssignMemberModal = () => {
     const { open, onClose, id } = useCommitteeMember()
 
-    const form = useForm<z.infer<typeof CommitteeMemberSchema>>({
-        resolver: zodResolver(CommitteeMemberSchema),
+    const form = useForm<z.infer<typeof CommitteeMember>>({
+        resolver: zodResolver(CommitteeMember),
         defaultValues: {
             committeeId: id,
             name: "",
@@ -67,7 +67,7 @@ export const AssignMemberModal = () => {
         }
     })
 
-    function onSubmit(values: z.infer<typeof CommitteeMemberSchema>) {
+    function onSubmit(values: z.infer<typeof CommitteeMember>) {
         toast.loading("Member adding...", {
             id: "assign-member"
         })
