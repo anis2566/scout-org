@@ -3,10 +3,11 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { QueryProvider } from "@/providers/query-provider";
 import { Toaster } from "sonner";
-import {SessionProvider} from "next-auth/react"
+import { SessionProvider } from "next-auth/react"
 import { ThemeProvider } from "@/providers/theme-provider";
 import { ModalProvider } from "@/providers/modal-provider";
 import NextTopLoader from 'nextjs-toploader';
+import { FcmProvider } from "@/providers/fcm-provider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -24,18 +25,18 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <SessionProvider>
-          <QueryProvider>
-            <ThemeProvider
-              attribute="class"
-              defaultTheme="dark"
-              disableTransitionOnChange
-            >
-              {children}
-              <Toaster />
-              <NextTopLoader showSpinner={false} />
-              <ModalProvider />
-            </ThemeProvider>
-          </QueryProvider>
+            <QueryProvider>
+              <ThemeProvider
+                attribute="class"
+                defaultTheme="dark"
+                disableTransitionOnChange
+              >
+                {children}
+                <Toaster />
+                <NextTopLoader showSpinner={false} />
+                <ModalProvider />
+              </ThemeProvider>
+            </QueryProvider>
         </SessionProvider>
       </body>
     </html>

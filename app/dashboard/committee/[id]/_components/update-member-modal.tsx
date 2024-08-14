@@ -9,6 +9,7 @@ import { toast } from "sonner"
 import { Trash } from "lucide-react"
 import { Designation } from "@prisma/client"
 import Image from "next/image"
+import { useEffect } from "react"
 
 import {
     Dialog,
@@ -34,48 +35,55 @@ import {
 } from "@/components/ui/select"
 
 import { CommitteeMember } from "../schema"
-import { useCommitteeMember } from "@/hooks/use-committee-member"
+import { useCommitteeMemberUpdate } from "@/hooks/use-committee-member"
 import { UploadButton } from "@/lib/uploadthing"
-import { ADD_MEMBER } from "../action"
+import { UPDATE_MEMBER } from "../action"
 
-export const AssignMemberModal = () => {
-    const { open, onClose, id } = useCommitteeMember()
-
+export const UpdateMemberModal = () => {
+    const { open, onClose, member, memberId } = useCommitteeMemberUpdate()
 
     const form = useForm<z.infer<typeof CommitteeMember>>({
         resolver: zodResolver(CommitteeMember),
         defaultValues: {
-            name: "",
-            imageUrl: "",
-            designation: undefined,
+            name: member?.name || "",
+            imageUrl: member?.imageUrl || "",
+            designation: member?.designation || undefined,
         },
     })
 
-    const { mutate: assignMember, isPending } = useMutation({
-        mutationFn: ADD_MEMBER,
+    useEffect(() => {
+        form.reset({
+            name: member?.name,
+            imageUrl: member?.imageUrl,
+            designation: member?.designation
+        });
+    }, [member, form]);
+
+    const { mutate: updateMember, isPending } = useMutation({
+        mutationFn: UPDATE_MEMBER,
         onSuccess: (data) => {
             onClose()
             form.reset()
             toast.success(data.success, {
-                id: "assign-member"
+                id: "update-member"
             });
         },
         onError: (error) => {
             toast.error(error.message, {
-                id: "assign-member"
+                id: "update-member"
             });
         }
     })
 
     function onSubmit(values: z.infer<typeof CommitteeMember>) {
-        toast.loading("Member adding...", {
-            id: "assign-member"
+        toast.loading("Member updating...", {
+            id: "update-member"
         })
-        assignMember({ values, committeeId: id })
+        updateMember({ values, id: memberId })
     }
 
     return (
-        <Dialog open={open && !!id} onOpenChange={onClose}>
+        <Dialog open={open && !!memberId} onOpenChange={onClose}>
             <DialogContent>
                 <DialogHeader>
                     <DialogTitle>Assign New Member</DialogTitle>

@@ -63,12 +63,6 @@ enum TrainingType {
   District
 }
 
-enum SignatureAuthor {
-  MD
-  Manager
-  Accountant
-}
-
 enum PublishStatus {
   Publish
   Unpublish
@@ -99,6 +93,7 @@ model User {
   role          Role            @default(User)
   status        Status          @default(Pending)
 
+  fcmToken      String?         @db.Text
   scout Scout?
   accounts      Account[]
  
@@ -396,5 +391,3 @@ model CommitteeMember {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
-
-

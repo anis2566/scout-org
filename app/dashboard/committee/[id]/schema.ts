@@ -2,7 +2,6 @@ import { Designation } from "@prisma/client";
 import { z } from "zod";
 
 export const CommitteeMember = z.object({
-  committeeId: z.string().min(1, { message: "required" }),
   name: z.string().min(1, { message: "required" }),
   designation: z
     .nativeEnum(Designation)

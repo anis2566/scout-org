@@ -50,9 +50,10 @@ import { DeleteBanModal } from "@/app/dashboard/app/ban/_components/delete-modal
 // COMMITTEE
 import { DeleteCommiteeModal } from "@/app/dashboard/committee/_components/delete-modal"
 import { AssignMemberModal } from "@/app/dashboard/committee/[id]/_components/assign-member-modal"
+import { UpdateMemberModal } from "@/app/dashboard/committee/[id]/_components/update-member-modal"
+import { DeleteMemberModal } from "@/app/dashboard/committee/[id]/_components/delete-member-modal"
 
-
-
+// SIGNATURE
 
 export const ModalProvider = () => {
     return (
@@ -109,6 +110,10 @@ export const ModalProvider = () => {
             {/* COMMITTEE */}
             <DeleteCommiteeModal />
             <AssignMemberModal />
+            <UpdateMemberModal />
+            <DeleteMemberModal />
+
+            {/* SIGNATURE */}
         </>
     )
 }

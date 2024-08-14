@@ -1,6 +1,7 @@
+"use client"
+
 import { CommitteeMember } from "@prisma/client"
-import { Edit, EllipsisVertical } from "lucide-react"
-import Link from "next/link"
+import { Edit, EllipsisVertical, Trash2 } from "lucide-react"
 
 import {
     Table,
@@ -10,7 +11,6 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table"
-import { Badge } from "@/components/ui/badge"
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -22,12 +22,16 @@ import { Button } from "@/components/ui/button"
 
 import { Empty } from "@/components/empty"
 import { formatString } from "@/lib/utils"
+import { useCommitteeMemberDelete, useCommitteeMemberUpdate } from "@/hooks/use-committee-member"
 
 interface Props {
     members: CommitteeMember[]
 }
 
 export const MemberList = ({ members }: Props) => {
+    const { onOpen } = useCommitteeMemberUpdate()
+    const { onOpen: onOpenDelete } = useCommitteeMemberDelete()
+
     return (
         <>
             {
@@ -64,14 +68,13 @@ export const MemberList = ({ members }: Props) => {
                                                     </Button>
                                                 </DropdownMenuTrigger>
                                                 <DropdownMenuContent align="end">
-                                                    <DropdownMenuItem asChild>
-                                                        <Link href={`/dashboard/committee/${commitee.committeeId}/edit/${commitee.id}`} className="flex items-center gap-x-3">
-                                                            <Edit className="w-4 h-4" />
-                                                            Edit
-                                                        </Link>
+                                                    <DropdownMenuItem className="flex items-center gap-x-3" onClick={() => onOpen(commitee, commitee.id)}>
+                                                        <Edit className="w-5 h-5" />
+                                                        <p>Edit</p>
                                                     </DropdownMenuItem>
-                                                    <DropdownMenuItem asChild>
-                                                        {/* <DeleteButton id={commitee.id} /> */}
+                                                    <DropdownMenuItem className="flex items-center gap-x-3 text-rose-500 group" onClick={() => onOpenDelete(commitee.id)}>
+                                                        <Trash2 className="w-5 h-5 group-hover:text-rose-600" />
+                                                        <p className="group-hover:text-rose-600">Delete</p>
                                                     </DropdownMenuItem>
                                                 </DropdownMenuContent>
                                             </DropdownMenu>
