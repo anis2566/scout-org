@@ -18,7 +18,9 @@ export default async function middleware(request: NextRequest) {
   const isScout = session?.user.role === Role.Scout || session?.user.role === Role.ScoutLeader
 
   if (!session && isProtected) {
-    return NextResponse.redirect(new URL("/auth/sign-in", request.nextUrl));
+    const signInUrl = new URL("/auth/sign-in", request.nextUrl);
+    signInUrl.searchParams.set("callback", request.nextUrl.pathname);
+    return NextResponse.redirect(signInUrl);
   } else {
     if(isScoutRoute && !isScout) {
       return NextResponse.redirect(new URL("/apply", request.nextUrl));

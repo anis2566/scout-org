@@ -15,7 +15,7 @@ interface Props {
 
 const AuthLayout = ({ children }: Props) => {
     const pathname = usePathname()
-    const isNoLayout = pathname.split("/").includes("verify")
+    const isNoLayout = pathname.split("/").includes("verify") || pathname.split("/").includes("forgot-password")
 
     return (
         <section className="container min-h-screen w-full flex items-center justify-center py-4">
@@ -30,7 +30,9 @@ const AuthLayout = ({ children }: Props) => {
                     />
                     </div>
                 </div>
-                {children}
+                <Suspense fallback={<Loader />}>
+                    {children}
+                </Suspense>
                 {
                     !isNoLayout && (
                         <div className="space-y-3">

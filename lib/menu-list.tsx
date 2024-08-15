@@ -285,14 +285,18 @@ export function getMenuList(pathname: string): Group[] {
           active: pathname.includes("/dashboard/gallery"),
           icon: GalleryVertical,
           submenus: [
-          ],
-        },
-        {
-          href: "/dashboard/message",
-          label: "Message",
-          active: pathname.includes("/dashboard/message"),
-          icon: MessageSquare,
-          submenus: [
+            {
+              href: "/dashboard/gallery/create",
+              label: "Create",
+              active: pathname === "/dashboard/gallery/create",
+              icon: Pen,
+            },
+            {
+              href: "/dashboard/gallery",
+              label: "List",
+              active: pathname === "/dashboard/gallery",
+              icon: List,
+            },
           ],
         },
         {
@@ -301,6 +305,18 @@ export function getMenuList(pathname: string): Group[] {
           active: pathname.includes("/dashboard/notice"),
           icon: Bell,
           submenus: [
+            {
+              href: "/dashboard/notice/create",
+              label: "Create",
+              active: pathname === "/dashboard/notice/create",
+              icon: Pen,
+            },
+            {
+              href: "/dashboard/notice",
+              label: "List",
+              active: pathname === "/dashboard/notice",
+              icon: List,
+            },
           ],
         },
       ],

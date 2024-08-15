@@ -46,6 +46,11 @@ enum CouponStatus {
   Inactive
 }
 
+enum NoticeStatus {
+  Active
+  Inactive
+}
+
 enum AppStatus {
   Pending
   Approved
@@ -387,6 +392,55 @@ model CommitteeMember {
 
   committeeId String
   committee Committee @relation(fields: [committeeId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+
+model News {
+  id String @id @default(uuid())
+  title String
+  news String @db.Text
+  imageUrl String
+
+  status PublishStatus @default(Unpublish)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+
+model Notice {
+  id String @id @default(uuid())
+  notice String @db.Text
+
+  status NoticeStatus @default(Inactive)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+
+model Gallery {
+  id String @id @default(uuid())
+  title String
+  imageUrl String
+
+  media GalleryMedia[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+
+model GalleryMedia {
+  id String @id @default(uuid())
+  title String
+  imageUrl String
+
+  galleryId String
+  gallery Gallery @relation(fields: [galleryId], references: [id], onDelete: Cascade)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

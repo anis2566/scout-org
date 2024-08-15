@@ -1,9 +1,14 @@
-import { VerifyEmail } from "@/components/templates/email-verify";
+"use client"
+
+import { signOut } from "next-auth/react";
 
 export default function Home() {
+  const handleSignOut = () => {
+    signOut()
+  }
   return (
     <main className="mt-10">
-      <VerifyEmail code={"222222"} />
+        <button onClick={handleSignOut}>Sign out</button>      
     </main>
   );
 }

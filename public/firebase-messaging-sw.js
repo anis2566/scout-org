@@ -5,13 +5,13 @@ importScripts(
 
 // Replace these with your own Firebase config keys...
 const firebaseConfig = {
-  apiKey: "AIzaSyDgbT9ssmMr42fxjC6Js86r4Y2f8OwBj4M",
-  authDomain: "apbn-ea8cc.firebaseapp.com",
-  projectId: "apbn-ea8cc",
-  storageBucket: "apbn-ea8cc.appspot.com",
-  messagingSenderId: "903448418334",
-  appId: "1:903448418334:web:bbdcb67f74055a8a65b60f",
-  measurementId: "G-RRDWT42H9W",
+  apiKey: "AIzaSyB4kxpbLJH_0s7DPPONaF77l7oB6Y0V_ak",
+  authDomain: "apbn-d5ca6.firebaseapp.com",
+  projectId: "apbn-d5ca6",
+  storageBucket: "apbn-d5ca6.appspot.com",
+  messagingSenderId: "148691918756",
+  appId: "1:148691918756:web:4b7d0d2aee938f2de62b31",
+  measurementId: "G-XQ3LZQYQ4Y"
 };
 
 firebase.initializeApp(firebaseConfig);

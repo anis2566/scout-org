@@ -40,8 +40,8 @@ export const UnitForm = () => {
     const {mutate: createUnit, isPending} = useMutation({
         mutationFn: CREATE_UNIT,
         onSuccess: (data) => {
-            // form.reset()
-            // router.push("/dashboard/unit")
+            form.reset()
+            router.push("/dashboard/unit")
             toast.success(data.success, {
                 id: "create-unit"
             });

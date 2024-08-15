@@ -164,7 +164,7 @@ export const EventForm = () => {
                                                             className="object-contain rounded-md mx-auto"
                                                             src={form.getValues("imageUrl")}
                                                         />
-                                                        <Button className="absolute top-0 right-0" variant="ghost" size="icon" onClick={() => form.setValue("imageUrl", "")} disabled={isPending}>
+                                                        <Button type="button" className="absolute top-0 right-0" variant="ghost" size="icon" onClick={() => form.setValue("imageUrl", "")} disabled={isPending}>
                                                             <Trash className="text-rose-500" />
                                                         </Button>
                                                     </div>

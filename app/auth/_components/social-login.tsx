@@ -17,7 +17,7 @@ export const SocialLogin = () => {
     })
 
     const handleLogin = () => {
-        signInUser({callback})
+        signInUser({callback}) 
     }
 
     return (

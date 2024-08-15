@@ -8,7 +8,7 @@ import { useEffect, useState } from "react"
 import Link from "next/link"
 import { useMutation } from "@tanstack/react-query"
 import { toast } from "sonner"
-import { useRouter } from "next/navigation"
+import { useRouter, useSearchParams } from "next/navigation"
 import { useSession } from "next-auth/react"
 
 import { Button } from "@/components/ui/button"
@@ -30,6 +30,8 @@ export const SignInForm = () => {
 
     const { data } = useSession()
     const router = useRouter()
+    const searchParams = useSearchParams()
+    const callback = searchParams.get("callback")
 
     useEffect(() => {
         if (data?.userId) {
@@ -67,7 +69,7 @@ export const SignInForm = () => {
         toast.loading("Login...", {
             id: "sign-in-user"
         })
-        signInUser({ values, callback: "/" })
+        signInUser({ values, callback: callback ? callback : "/" })
     }
 
 

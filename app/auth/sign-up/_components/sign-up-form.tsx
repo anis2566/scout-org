@@ -9,7 +9,6 @@ import Link from "next/link"
 import Image from "next/image"
 import { toast } from "sonner"
 import { useMutation } from "@tanstack/react-query"
-import { useRouter } from "next/navigation"
 
 import { Button } from "@/components/ui/button"
 import {
@@ -29,25 +28,12 @@ import { SignUpSchema } from "../schema"
 export const SignUpForm = () => {
     const [showPassword, setShowPassword] = useState<boolean>(false)
 
-    const router = useRouter()
-
     const togglePassword = () => {
         setShowPassword(prev => !prev)
     }
 
     const { mutate: signUp, isPending } = useMutation({
         mutationFn: SIGN_UP,
-        onSuccess: (data) => {
-            form.reset()
-            toast.success(data?.success, {
-                id: "register",
-                duration: 2000
-            })
-            if (data?.user) {
-                // router.push(`/auth/verify/${data?.user?.id}`)
-                router.push(`/auth/sign-in`)
-            }
-        },
         onError: (error) => {
             toast.error(error.message, {
                 id: "register",
@@ -112,7 +98,7 @@ export const SignUpForm = () => {
                             <FormControl>
                                 <div className="relative">
                                     <Input placeholder="Enter your email" {...field} type={showPassword ? "text" : "password"} disabled={isPending} />
-                                    <Button variant="ghost" size="icon" className="absolute right-0 top-0" onClick={togglePassword}>
+                                    <Button variant="ghost" size="icon" className="absolute right-0 top-0" onClick={togglePassword} type="button">
                                         {
                                             showPassword ? (
                                                 <EyeOff className="w-5 h-5" />

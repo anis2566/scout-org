@@ -53,6 +53,19 @@ import { AssignMemberModal } from "@/app/dashboard/committee/[id]/_components/as
 import { UpdateMemberModal } from "@/app/dashboard/committee/[id]/_components/update-member-modal"
 import { DeleteMemberModal } from "@/app/dashboard/committee/[id]/_components/delete-member-modal"
 
+// NEWS
+import { DeleteNewsModal } from "@/app/dashboard/news/_components/delete-modal"
+
+// NOTICE
+import { DeleteNoticeModal } from "@/app/dashboard/notice/_components/delete-modal"
+
+// GALLERY
+import { DeleteGalleryModal } from "@/app/dashboard/gallery/_components/delete-modal"
+import { DeleteGalleryMediaModal } from "@/app/dashboard/gallery/[id]/_components/delete-modal"
+
+// PASSWORD
+import { PasswordModal } from "@/app/auth/forgot-password/[id]/_components/password-modal"
+
 // SIGNATURE
 
 export const ModalProvider = () => {
@@ -114,6 +127,19 @@ export const ModalProvider = () => {
             <DeleteMemberModal />
 
             {/* SIGNATURE */}
+
+            {/* NEWS */}
+            <DeleteNewsModal />
+
+            {/* NOTICE */}
+            <DeleteNoticeModal />
+            
+            {/* GALLERY */}
+            <DeleteGalleryModal />
+            <DeleteGalleryMediaModal />
+
+            {/* PASSWORD */}
+            <PasswordModal />
         </>
     )
 }
