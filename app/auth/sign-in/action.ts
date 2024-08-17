@@ -1,7 +1,5 @@
 "use server";
 
-export const runtime = "nodejs";
-
 import { AuthError } from "next-auth";
 import { redirect } from "next/navigation";
 import { isRedirectError } from "next/dist/client/components/redirect";
