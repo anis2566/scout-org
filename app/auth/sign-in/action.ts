@@ -17,6 +17,7 @@ type SignInUser = {
   values: SignInSchemaType;
   callback: string | null;
 };
+
 export const SIGN_IN_USER = async ({ values, callback }: SignInUser) => {
   try {
     const user = await db.user.findUnique({
@@ -30,31 +31,29 @@ export const SIGN_IN_USER = async ({ values, callback }: SignInUser) => {
     }
 
     if (!user.emailVerified) {
-      const { data } = await axios.post(
-        `${
-          process.env.NODE_ENV === "production"
-            ? "https://scout-org.vercel.app/api/send-email"
-            : "http://localhost:3000/api/send-email"
-        }`,
-        {
-          email: user.email,
-          id: user.id,
-        }
-      );
+      const apiUrl = process.env.NODE_ENV === "production"
+        ? "https://scout-org.vercel.app/api/send-email"
+        : "http://localhost:3000/api/send-email";
+
+      const { data } = await axios.post(apiUrl, {
+        email: user.email,
+        id: user.id,
+      });
+
       if (data?.success) {
         redirect(`/auth/verify/${user.id}`);
       } else {
         throw new Error("Something went wrong! Try again!");
       }
     } else {
-    }
-    await signIn("credentials", {
-      email: values.email,
-      password: values.password,
-      redirectTo: callback ? callback : "/",
-    });
+      await signIn("credentials", {
+        email: values.email,
+        password: values.password,
+        redirectTo: callback ? callback : "/",
+      });
 
-    return { success: "Login successful", user };
+      return { success: "Login successful", user };
+    }
   } catch (error) {
     if (isRedirectError(error)) {
       throw error;
