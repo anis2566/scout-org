@@ -4,12 +4,11 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
 import { Eye, EyeOff } from "lucide-react"
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import Link from "next/link"
 import { useMutation } from "@tanstack/react-query"
 import { toast } from "sonner"
-import { useRouter, useSearchParams } from "next/navigation"
-import { useSession } from "next-auth/react"
+import { useSearchParams } from "next/navigation"
 
 import { Button } from "@/components/ui/button"
 import {
@@ -28,16 +27,8 @@ import { SIGN_IN_USER } from "../action"
 export const SignInForm = () => {
     const [showPassword, setShowPassword] = useState<boolean>(false)
 
-    const { data } = useSession()
-    const router = useRouter()
     const searchParams = useSearchParams()
     const callback = searchParams.get("callback")
-
-    useEffect(() => {
-        if (data?.userId) {
-            router.push("/")
-        }
-    }, [data?.userId, router])
 
     const togglePassword = () => {
         setShowPassword(prev => !prev)
