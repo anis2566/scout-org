@@ -8,6 +8,8 @@ import { db } from "./lib/prisma";
 import { SignInSchema } from "./app/auth/sign-in/schema";
 import { GET_USER_BY_EMAIL } from "./services/user.service";
 import { VERIFY_EMAIL } from "./app/auth/sign-in/action";
+import streamServerClient from "@/lib/stream";
+import { use } from "react";
 
 export const authConfig = {
   adapter: PrismaAdapter(db),
@@ -37,7 +39,12 @@ export const authConfig = {
     async linkAccount({ user, account }) {
       if (["google", "github"].includes(account.provider)) {
         if (user.email) {
-          await VERIFY_EMAIL(user.email);
+          await streamServerClient.upsertUser({
+            id: user.id ?? "",
+            name: user.name ?? "Guest",
+            username: user.name ?? "Guest",
+          });
+          // await VERIFY_EMAIL(user.email);
         }
       }
     },
