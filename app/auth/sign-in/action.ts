@@ -31,9 +31,10 @@ export const SIGN_IN_USER = async ({ values, callback }: SignInUser) => {
     }
 
     if (!user.emailVerified) {
-      const apiUrl = process.env.NODE_ENV === "production"
-        ? "https://scout-org.vercel.app/api/send-email"
-        : "http://localhost:3000/api/send-email";
+      const apiUrl =
+        process.env.NODE_ENV === "production"
+          ? "https://scout-org.vercel.app/api/send-email"
+          : "http://localhost:3000/api/send-email";
 
       const { data } = await axios.post(apiUrl, {
         email: user.email,
@@ -99,21 +100,17 @@ export const VERIFY_EMAIL = async (email: string) => {
     avatar: user.image,
   });
 
-  // try {
-  //   const streamServerClient = StreamChat.getInstance(
-  //     process.env.NEXT_PUBLIC_STREAM_KEY!,
-  //     process.env.STREAM_SECRET,
-  //     {
-  //       timeout: 6000,
-  //     }
-  //   );
-  //   await streamServerClient.upsertUser({
-  //     id: updatedUser.id,
-  //     name: updatedUser.name ?? "Guest",
-  //     username: updatedUser.name ?? "Guest",
-  //   });
-  // } catch (error) {
-  //   console.log(error);
-  // }
-  return;
+  try {
+    const apiUrl =
+      process.env.NODE_ENV === "production"
+        ? "https://scout-org.vercel.app/api/auth/verify-email"
+        : "http://localhost:3000/api/auth/verify-email";
+
+    const { data } = await axios.post(apiUrl, {
+      user,
+    });
+    return;
+  } catch (error) {
+    console.log(error);
+  }
 };
