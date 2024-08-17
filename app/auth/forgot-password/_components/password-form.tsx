@@ -3,7 +3,6 @@
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
 import Link from "next/link"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
@@ -11,7 +10,6 @@ import { z } from "zod"
 import {
     Form,
     FormControl,
-    FormDescription,
     FormField,
     FormItem,
     FormLabel,
@@ -27,7 +25,7 @@ const formSchema = z.object({
 
 export const PasswordForm = () => {
 
-    const {mutate: handleForgot, isPending} = useMutation({
+    const { mutate: handleForgot, isPending } = useMutation({
         mutationFn: FORGOT_PASSWORD_REQUEST,
         onError: (error) => {
             toast.error(error.message)
@@ -44,7 +42,7 @@ export const PasswordForm = () => {
     function onSubmit(values: z.infer<typeof formSchema>) {
         handleForgot(values.email)
     }
-    
+
     return (
         <Card className="mx-auto max-w-sm shadow-0 border-0">
             <CardHeader className="space-y-1 text-center">

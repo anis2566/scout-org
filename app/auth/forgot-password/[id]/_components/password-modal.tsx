@@ -6,6 +6,7 @@ import { useForm } from "react-hook-form"
 import { z } from "zod"
 import { useMutation } from "@tanstack/react-query"
 import { toast } from "sonner"
+import { useRouter } from "next/navigation"
 
 import {
     Dialog,
@@ -22,12 +23,16 @@ import {
     FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
+
 import { PasswordSchema } from "../schema"
 import { usePassword } from "@/hooks/use-password"
+import { CHANGE_PASSWORD } from "../action"
 
 
 export const PasswordModal = () => {
     const { open, onClose, id } = usePassword()
+
+    const router = useRouter()
 
     const form = useForm<z.infer<typeof PasswordSchema>>({
         resolver: zodResolver(PasswordSchema),
@@ -37,36 +42,34 @@ export const PasswordModal = () => {
         },
     })
 
-    // const { mutate: createCoupon, isPending } = useMutation({
-    //     mutationFn: CREATE_COUPON,
-    //     onSuccess: (data) => {
-    //         onClose()
-    //         form.reset()
-    //         toast.success(data.success, {
-    //             id: "create-coupon"
-    //         });
-    //     },
-    //     onError: (error) => {
-    //         toast.error(error.message, {
-    //             id: "create-coupon"
-    //         });
-    //     }
-    // })
+    const { mutate: changePassword, isPending } = useMutation({
+        mutationFn: CHANGE_PASSWORD,
+        onSuccess: (data) => {
+            onClose()
+            toast.success(data.success, {
+                id: "change-password"
+            });
+            router.push("/auth/sign-in")
+        },
+        onError: (error) => {
+            toast.error(error.message, {
+                id: "change-password"
+            });
+        }
+    })
 
     function onSubmit(values: z.infer<typeof PasswordSchema>) {
-        toast.loading("Coupon creating...", {
-            id: "create-coupon"
+        toast.loading("Password changing...", {
+            id: "change-password"
         })
-        // createCoupon(values)
+        changePassword({ id, password: values.password })
     }
 
-    let isPending = false
-
     return (
-        <Dialog open={open} onOpenChange={onClose}>
+        <Dialog open={open}>
             <DialogContent>
                 <DialogHeader>
-                    <DialogTitle>Assign New Fee</DialogTitle>
+                    <DialogTitle>New Password</DialogTitle>
                 </DialogHeader>
                 <Form {...form}>
                     <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
@@ -82,6 +85,7 @@ export const PasswordModal = () => {
                                     <FormMessage />
                                 </FormItem>
                             )}
+                        />
                         <FormField
                             control={form.control}
                             name="confirmPassword"
@@ -100,6 +104,5 @@ export const PasswordModal = () => {
                 </Form>
             </DialogContent>
         </Dialog>
-
     )
 }

@@ -3,7 +3,6 @@
 import { useMutation } from "@tanstack/react-query"
 import { useState } from "react"
 import { toast } from "sonner"
-import { useRouter } from "next/navigation"
 
 import {
     InputOTP,
@@ -11,7 +10,9 @@ import {
     InputOTPSeparator,
     InputOTPSlot,
 } from "@/components/ui/input-otp"
+
 import { VERIFY_FORGOT_PASSWORD } from "../action"
+import { usePassword } from "@/hooks/use-password"
 
 interface Props {
     id: string;
@@ -20,7 +21,7 @@ interface Props {
 export const VerifyForm = ({ id }: Props) => {
     const [value, setValue] = useState<string>("")
 
-    const router = useRouter()
+    const {onOpen} = usePassword()
 
     const { mutate: verifyUser, isPending } = useMutation({
         mutationFn: VERIFY_FORGOT_PASSWORD,
@@ -28,7 +29,9 @@ export const VerifyForm = ({ id }: Props) => {
             toast.success(data?.success, {
                 id: "verify-user"
             })
-            alert (data?.success)
+            if(data?.id) {
+                onOpen(data?.id)
+            }
         },
         onError: (error) => {
             toast.error(error.message, {

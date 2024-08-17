@@ -87,6 +87,10 @@ enum Designation {
   Member
 }
 
+enum SignatureAuthor {
+  President
+  Secretary
+}
 
 model User {
   id            String          @id @default(cuid())
@@ -442,6 +446,25 @@ model GalleryMedia {
   galleryId String
   gallery Gallery @relation(fields: [galleryId], references: [id], onDelete: Cascade)
 
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+
+model Signature {
+  id String @id @default(uuid())
+  author SignatureAuthor
+  imageUrl String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+
+model Counter {
+  id String @id @default(uuid())
+  count Int @default(600)
+  
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }

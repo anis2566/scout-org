@@ -118,7 +118,7 @@ export const PaymentForm = ({ scoutId }: PaymentFormProps) => {
                 fee === 0 ? (
                     <Button disabled={isPaying} onClick={() => confirmPayment(scoutId)}>Confirm Payment</Button>
                 ) : (
-                    <Button onClick={handlePay} disabled={isPendingCreatePayment}>Pay with Bkash</Button>
+                    <Button onClick={handlePay} disabled={isPendingCreatePayment}>Pay Now</Button>
                 )
             }
         </div>

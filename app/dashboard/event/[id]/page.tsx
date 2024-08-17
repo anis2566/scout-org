@@ -2,6 +2,8 @@ import Image from "next/image";
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import { CalendarCheck, CalendarDays, CalendarFold, CalendarX, DollarSign, MapPin, Proportions } from "lucide-react";
+import { Metadata } from "next";
+import { AppStatus } from "@prisma/client";
 
 import {
     Breadcrumb,
@@ -17,7 +19,9 @@ import { ListBox } from "@/components/list-box";
 import { CustomPagination } from "@/components/custom-pagination";
 import { db } from "@/lib/prisma";
 import { ContentLayout } from "../../_components/content-layout";
-import { Metadata } from "next";
+import { EventParticipants } from "./_components/participant-list";
+import { Header } from "./_components/header";
+
 
 export const metadata: Metadata = {
     title: "APBn Scouts | Event Details",
@@ -49,43 +53,43 @@ const EventDetails = async ({ params: { id }, searchParams }: Props) => {
     const itemsPerPage = parseInt(perPage) || 5;
     const currentPage = parseInt(page) || 1;
 
-    // const participants = await db.eventApplication.findMany({
-    //     where: {
-    //         eventId: event.id,
-    //         ...(search && {
-    //             scout: {
-    //                 name: {
-    //                     contains: search, mode: "insensitive"
-    //                 }
-    //             }
-    //         }),
-    //         status: MigrationStatus.Approved
-    //     },
-    //     include: {
-    //         scout: true
-    //     },
-    //     orderBy: {
-    //         createdAt: "desc"
-    //     },
-    //     skip: (currentPage - 1) * itemsPerPage,
-    //     take: itemsPerPage,
-    // })
+    const participants = await db.eventApplication.findMany({
+        where: {
+            eventId: event.id,
+            ...(search && {
+                scout: {
+                    name: {
+                        contains: search, mode: "insensitive"
+                    }
+                }
+            }),
+            status: AppStatus.Approved
+        },
+        include: {
+            scout: true
+        },
+        orderBy: {
+            createdAt: "desc"
+        },
+        skip: (currentPage - 1) * itemsPerPage,
+        take: itemsPerPage,
+    })
 
-    // const totalParticipant = await db.eventApplication.count({
-    //     where: {
-    //         eventId: event.id,
-    //         ...(search && {
-    //             scout: {
-    //                 name: {
-    //                     contains: search, mode: "insensitive"
-    //                 }
-    //             }
-    //         }),
-    //         status: MigrationStatus.Approved
-    //     }
-    // })
+    const totalParticipant = await db.eventApplication.count({
+        where: {
+            eventId: event.id,
+            ...(search && {
+                scout: {
+                    name: {
+                        contains: search, mode: "insensitive"
+                    }
+                }
+            }),
+            status: AppStatus.Approved
+        }
+    })
 
-    // const totalPage = Math.ceil(totalParticipant / itemsPerPage)
+    const totalPage = Math.ceil(totalParticipant / itemsPerPage)
 
     return (
         <ContentLayout title="Event">
@@ -142,9 +146,9 @@ const EventDetails = async ({ params: { id }, searchParams }: Props) => {
                         <CardDescription>A collection of participants scout.</CardDescription>
                     </CardHeader>
                     <CardContent className="space-y-4">
-                        {/* <Header /> */}
-                        {/* <EventParticipants participants={participants} /> */}
-                        {/* <CustomPagination totalPage={totalPage} /> */}
+                        <Header />
+                        <EventParticipants participants={participants} />
+                        <CustomPagination totalPage={totalPage} />
                     </CardContent>
                 </Card>
             </div>

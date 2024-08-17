@@ -67,6 +67,11 @@ import { DeleteGalleryMediaModal } from "@/app/dashboard/gallery/[id]/_component
 import { PasswordModal } from "@/app/auth/forgot-password/[id]/_components/password-modal"
 
 // SIGNATURE
+import { AssignSignatureModal } from "@/app/dashboard/utils/signature/_components/create-signature-modal"
+import { UpdateSignatureModal } from "@/app/dashboard/utils/signature/_components/update-signature-modal"
+import { DeleteSignatureModal } from "@/app/dashboard/utils/signature/_components/delete-signature-modal"
+
+// SIGNATURE
 
 export const ModalProvider = () => {
     return (
@@ -140,6 +145,11 @@ export const ModalProvider = () => {
 
             {/* PASSWORD */}
             <PasswordModal />
+
+            {/* SIGNATURE */}
+            <AssignSignatureModal />
+            <UpdateSignatureModal />
+            <DeleteSignatureModal />
         </>
     )
 }

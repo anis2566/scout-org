@@ -25,6 +25,8 @@ import {
   GalleryVertical,
   MessageSquare,
   Bell,
+  Headset,
+  MessageSquareText,
 } from "lucide-react";
 
 type Submenu = {
@@ -253,6 +255,18 @@ export function getMenuList(pathname: string): Group[] {
               icon: FileSignature,
             },
           ],
+        },
+      ],
+    },
+    {
+      groupLabel: "Support",
+      menus: [
+        {
+          href: "/dashboard/support",
+          label: "Messages",
+          active: pathname.includes("/dashboard/support"),
+          icon: MessageSquareText,
+          submenus: [],
         },
       ],
     },

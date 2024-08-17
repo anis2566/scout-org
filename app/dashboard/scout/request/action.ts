@@ -23,6 +23,28 @@ export const UPDATE_SCOUT_STATUS = async ({ id, status }: UpdateStatus) => {
   }
 
   if (status === Status.Active) {
+    let apsId = scout.apsId;
+    if (!scout.apsId) {
+      const counter = await db.counter.findFirst();
+
+      if (!counter) {
+        throw new Error("Counter not found");
+      }
+
+      apsId = `${new Date().getFullYear().toString().slice(-2)}/${(counter?.count ?? 0) + 1}`;
+
+      await db.counter.update({
+        where: {
+          id: counter.id,
+        },
+        data: {
+          count: {
+            increment: 1,
+          },
+        },
+      });
+    }
+
     await db.scout.update({
       where: {
         id,
@@ -31,6 +53,7 @@ export const UPDATE_SCOUT_STATUS = async ({ id, status }: UpdateStatus) => {
         unitId: scout.preferedUnitId,
         preferedUnitId: null,
         preferedUnitName: null,
+        apsId,
       },
     });
   }

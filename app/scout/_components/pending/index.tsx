@@ -44,29 +44,39 @@ export function Pending({ adminId }: Props) {
                             Your account is currently pending approval. Please contact our support team to resolve this issue.
                         </CardDescription>
                     </CardHeader>
-                    <CardContent className="space-y-5">
-                        <div className="flex items-center justify-between gap-x-5">
-                            {
-                                isLoading ? (
-                                    <div className={cn(buttonVariants({ variant: "outline" }), "w-full")}>
-                                        <Loader2 className="w-5 h-5 animate-spin" />
-                                    </div>
-                                ) : (
+                    <CardContent>
+                        {
+                            scout?.isPaid ? (
+                                <div className="space-y-5">
+                                    <div className="flex items-center justify-between gap-x-5">
+                                        {
+                                            isLoading ? (
+                                                <div className={cn(buttonVariants({ variant: "outline" }), "w-full")}>
+                                                    <Loader2 className="w-5 h-5 animate-spin" />
+                                                </div>
+                                            ) : (
 
-                                    <Button className="w-full" asChild variant="outline">
-                                        <Link href={`/scout/edit/${scout?.id}`}>
-                                            Edit Form
-                                        </Link>
+                                                <Button className="w-full" asChild variant="outline">
+                                                    <Link href={`/scout/edit/${scout?.id}`}>
+                                                        Edit Form
+                                                    </Link>
+                                                </Button>
+                                            )
+                                        }
+                                        <Button className="w-full">
+                                            Download Form
+                                        </Button>
+                                    </div>
+                                    <Button asChild className="w-full bg-indigo-500" variant="gooeyRight">
+                                        <Link href={`/scout/support?user=${adminId}`}>Support</Link>
                                     </Button>
-                                )
-                            }
-                            <Button className="w-full">
-                                Download Form
-                            </Button>
-                        </div>
-                        <Button asChild className="w-full bg-indigo-500" variant="gooeyRight">
-                            <Link href={`/scout/support?user=${adminId}`}>Support</Link>
-                        </Button>
+                                </div>
+                            ) : (
+                                <Button asChild className="w-full" variant="gooeyRight">
+                                    <Link href={`/apply/payment/${scout?.id}`}>Pay Now</Link>
+                                </Button>
+                            )
+                        }
                     </CardContent>
                 </Card>
             </div>

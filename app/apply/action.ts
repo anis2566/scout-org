@@ -76,6 +76,7 @@ export const CREATE_SCOUT = async (values: ScoutSchemaType) => {
   const { user } = await GET_USER();
 
   const { preferedUnit, ...rest } = data;
+
   const newScout = await db.scout.create({
     data: {
       ...rest,

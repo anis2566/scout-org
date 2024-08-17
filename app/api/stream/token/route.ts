@@ -1,5 +1,6 @@
 import { auth } from "@/auth";
 import streamServerClient from "@/lib/stream";
+import { NextResponse } from "next/server";
 
 export async function GET() {
   try {
@@ -19,9 +20,7 @@ export async function GET() {
       issuedAt
     );
 
-    console.log(token)
-
-    return Response.json({ token });
+    return NextResponse.json({ token });
   } catch (error) {
     console.error(error);
     return Response.json({ error: "Internal server error" }, { status: 500 });

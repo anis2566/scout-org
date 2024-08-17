@@ -1,6 +1,7 @@
 "use server";
 
 import { db } from "@/lib/prisma";
+import { saltAndHashPassword } from "@/lib/utils";
 
 type VerifyUser = {
   id: string;
@@ -30,5 +31,38 @@ export const VERIFY_FORGOT_PASSWORD = async ({ id, code }: VerifyUser) => {
 
   return {
     success: true,
+    id: token.identifier,
+  };
+};
+
+type ChangePassword = {
+  id: string;
+  password: string;
+};
+
+export const CHANGE_PASSWORD = async ({ id, password }: ChangePassword) => {
+  const user = await db.user.findUnique({
+    where: {
+      id,
+    },
+  });
+
+  if (!user) {
+    throw new Error("User not found");
+  }
+
+  const hashedPassword = saltAndHashPassword(password);
+
+  await db.user.update({
+    where: {
+      id,
+    },
+    data: {
+      password: hashedPassword,
+    },
+  });
+
+  return {
+    success: "Password changed",
   };
 };
