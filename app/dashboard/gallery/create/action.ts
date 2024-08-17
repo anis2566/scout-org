@@ -1,5 +1,7 @@
 "use server";
 
+import { revalidatePath } from "next/cache";
+
 import { db } from "@/lib/prisma";
 import { GallerySchema, GallerySchemaType } from "./schema";
 
@@ -25,6 +27,8 @@ export const CREATE_GALLERY = async (values: GallerySchemaType) => {
       ...data,
     },
   });
+
+  revalidatePath("/dashboard/gallery")
 
   return {
     success: "Gallery created",

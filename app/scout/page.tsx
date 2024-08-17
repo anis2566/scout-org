@@ -143,7 +143,9 @@ const ScoutDashboard = async () => {
               </div>
               <div className="flex items-center justify-between">
                 <h3 className="text-lg font-semibold">Scout Form</h3>
-                <Button>Download</Button>
+                <Button asChild>
+                  <Link href={`/scout/form/${scout.id}`} target="_blank">Download</Link>
+                </Button>
               </div>
             </CardContent>
           </Card>

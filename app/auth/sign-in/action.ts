@@ -9,7 +9,6 @@ import { Knock } from "@knocklabs/node";
 import { signIn } from "@/auth";
 import { SignInSchemaType } from "./schema";
 import { db } from "@/lib/prisma";
-import { StreamChat } from "stream-chat";
 
 const knock = new Knock(process.env.NEXT_PUBLIC_KNOCK_API_KEY);
 
@@ -33,7 +32,7 @@ export const SIGN_IN_USER = async ({ values, callback }: SignInUser) => {
     if (!user.emailVerified) {
       const apiUrl =
         process.env.NODE_ENV === "production"
-          ? "https://scout-org.vercel.app/api/send-email"
+          ? "https://www.apbnscouts.org/api/send-email"
           : "http://localhost:3000/api/send-email";
 
       const { data } = await axios.post(apiUrl, {
@@ -86,7 +85,7 @@ export const VERIFY_EMAIL = async (email: string) => {
     throw new Error("User not found");
   }
 
-  const updatedUser = await db.user.update({
+  await db.user.update({
     where: {
       email,
     },
@@ -103,7 +102,7 @@ export const VERIFY_EMAIL = async (email: string) => {
   try {
     const apiUrl =
       process.env.NODE_ENV === "production"
-        ? "https://scout-org.vercel.app/api/auth/verify-email"
+        ? "https://www.apbnscouts.org/api/auth/verify-email"
         : "http://localhost:3000/api/auth/verify-email";
 
     const { data } = await axios.post(apiUrl, {
