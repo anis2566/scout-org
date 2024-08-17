@@ -20,6 +20,7 @@ import { formattedStr } from "@/lib/utils";
 import { ListBox } from "@/components/list-box";
 import { GET_SCOUT } from "@/services/user.service";
 import { ContentLayout } from "../_components/content-layout";
+import { db } from "@/lib/prisma";
 
 export const metadata: Metadata = {
     title: "APBn Scouts | Profile",
@@ -30,17 +31,17 @@ const Profile = async () => {
 
     const { scout } = await GET_SCOUT()
 
-    // const awards = await db.scoutAward.findMany({
-    //     where: {
-    //         scoutId: scout.id
-    //     },
-    //     include: {
-    //         award: true,
-    //     },
-    //     orderBy: {
-    //         createdAt: "desc"
-    //     }
-    // })
+    const awards = await db.scoutAward.findMany({
+        where: {
+            scoutId: scout.id
+        },
+        include: {
+            award: true,
+        },
+        orderBy: {
+            createdAt: "desc"
+        }
+    })
 
     return (
         <ContentLayout title="Profile">
@@ -161,7 +162,7 @@ const Profile = async () => {
                             <CardTitle>Achievements</CardTitle>
                         </CardHeader>
                         <CardContent className="space-y-8">
-                            {/* {
+                            {
                                 awards.length < 1 ? (
                                     <div className="min-h-[20vh] flex items-center justify-center">
                                         <p className="italic text-muted-foreground">No Award Yet.</p>
@@ -178,7 +179,7 @@ const Profile = async () => {
                                         </div>
                                     </div>
                                 ))
-                            } */}
+                            }
                         </CardContent>
                     </Card>
                 </div>
