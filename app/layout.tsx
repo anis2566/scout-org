@@ -7,7 +7,6 @@ import { SessionProvider } from "next-auth/react"
 import { ThemeProvider } from "@/providers/theme-provider";
 import { ModalProvider } from "@/providers/modal-provider";
 import NextTopLoader from 'nextjs-toploader';
-import { FcmProvider } from "@/providers/fcm-provider";
 
 const inter = Inter({ subsets: ["latin"] });
 
