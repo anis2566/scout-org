@@ -63,8 +63,10 @@ export function Pending({ adminId }: Props) {
                                                 </Button>
                                             )
                                         }
-                                        <Button className="w-full">
-                                            Download Form
+                                        <Button className="w-full" asChild>
+                                            <Link href={`/scout/form/${scout.id}`} target="_blank">
+                                                Download Form
+                                            </Link>
                                         </Button>
                                     </div>
                                     <Button asChild className="w-full bg-indigo-500" variant="gooeyRight">

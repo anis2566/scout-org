@@ -22,25 +22,25 @@ export default function ScoutLayout({
     const sidebar = useSidebar(useSidebarToggle, (state) => state);
     const pathname = usePathname()
     const isNoLayout = pathname.includes("/scout/edit")
-    const supportPage = pathname.includes("/scout/support")
+    const isFormPage = pathname.includes("/scout/form")
 
     if (!sidebar) return null;
 
     return (
         <>
             {
-                !isNoLayout && !supportPage && (
+                !isNoLayout && !isFormPage && (
                     <Sidebar status={status} adminId={adminId} />
                 )
             }
             <main
                 className={cn(
                     "min-h-[calc(100vh_-_56px)] transition-[margin-left] ease-in-out duration-300",
-                    isNoLayout || supportPage ? "ml-0 max-w-6xl mx-auto" : sidebar?.isOpen === false ? "lg:ml-[90px]" : "lg:ml-64",
+                    isNoLayout || isFormPage ? "ml-0 max-w-6xl mx-auto" : sidebar?.isOpen === false ? "lg:ml-[90px]" : "lg:ml-64",
                 )}
             >
                 {
-                    status === "Pending" && !supportPage && !isNoLayout ? <Pending adminId={adminId} /> : children
+                    status === "Pending" && !isFormPage && !isNoLayout ? <Pending adminId={adminId} /> : children
                 }
             </main>
         </>

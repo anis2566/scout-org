@@ -4,9 +4,6 @@ import { Loader2 } from "lucide-react";
 import { Chat } from "stream-chat-react"
 import { useTheme } from "next-themes";
 import { useState } from "react";
-import Link from "next/link";
-
-import { Button } from "@/components/ui/button";
 
 import useInitializeChatClient from "@/hooks/use-initialize-chat-client";
 import { Sidebar } from "./sidebar";
@@ -26,9 +23,6 @@ export const ChatPage = () => {
 
     return (
         <div className="relative w-full overflow-hidden rounded-2xl bg-card shadow-sm py-6 space-y-4">
-            <Button asChild>
-                <Link href="/scout">Go to Dashboard</Link>
-            </Button>
             <div className="flex w-full">
                 <Chat
                     client={chatClient}

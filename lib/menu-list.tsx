@@ -416,6 +416,13 @@ export function getMenuListScout(pathname: string): Group[] {
           ],
         },
         {
+          href: "/scout/support",
+          label: "Support",
+          active: pathname.includes("/scout/support"),
+          icon: Headset,
+          submenus: [],
+        },
+        {
           href: "/scout/profile",
           label: "Profile",
           active: pathname.includes("/scout/profile"),
