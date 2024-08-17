@@ -47,7 +47,7 @@ export const PasswordForm = () => {
         <Card className="mx-auto max-w-sm shadow-0 border-0">
             <CardHeader className="space-y-1 text-center">
                 <CardTitle className="text-2xl font-bold">Forgot Password</CardTitle>
-                <CardDescription>Enter your email address and we'll send you a link to reset your password.</CardDescription>
+                <CardDescription>Enter your email address and we will send you a link to reset your password.</CardDescription>
             </CardHeader>
             <CardContent>
                 <Form {...form}>
