@@ -32,30 +32,30 @@ export const SIGN_IN_USER = async ({ values, callback }: SignInUser) => {
       throw new Error("Invalid credentials");
     }
 
-    if (!user.emailVerified) {
-      const apiUrl = process.env.NODE_ENV === "production"
-        ? "https://scout-org.vercel.app/api/send-email"
-        : "http://localhost:3000/api/send-email";
+    // if (!user.emailVerified) {
+    //   const apiUrl = process.env.NODE_ENV === "production"
+    //     ? "https://scout-org.vercel.app/api/send-email"
+    //     : "http://localhost:3000/api/send-email";
 
-      const { data } = await axios.post(apiUrl, {
-        email: user.email,
-        id: user.id,
-      });
+    //   const { data } = await axios.post(apiUrl, {
+    //     email: user.email,
+    //     id: user.id,
+    //   });
 
-      if (data?.success) {
-        redirect(`/auth/verify/${user.id}`);
-      } else {
-        throw new Error("Something went wrong! Try again!");
-      }
-    } else {
-      await signIn("credentials", {
-        email: values.email,
-        password: values.password,
-        redirectTo: callback ? callback : "/",
-      });
+    //   if (data?.success) {
+    //     redirect(`/auth/verify/${user.id}`);
+    //   } else {
+    //     throw new Error("Something went wrong! Try again!");
+    //   }
+    // } else {
+    // }
+    await signIn("credentials", {
+      email: values.email,
+      password: values.password,
+      redirectTo: callback ? callback : "/",
+    });
 
-      return { success: "Login successful", user };
-    }
+    return { success: "Login successful", user };
   } catch (error) {
     if (isRedirectError(error)) {
       throw error;
